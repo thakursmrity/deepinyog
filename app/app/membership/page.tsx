@@ -19,7 +19,6 @@ export default async function Membership({ searchParams }: { searchParams: Promi
   ]);
   const plans = (data ?? []) as Plan[];
   const memberships = plans.filter((p) => p.kind === "membership");
-  const coaching = plans.filter((p) => p.kind === "coaching");
 
   return (
     <>
@@ -87,28 +86,15 @@ export default async function Membership({ searchParams }: { searchParams: Promi
         Memberships are paid once for the period and don&apos;t renew on their own. Extending early adds the days on top.
       </p>
 
-      {coaching.length > 0 ? (
-        <section id="coaching" style={{ display: "flex", flexDirection: "column", gap: 20, scrollMarginTop: 16 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 680 }}>
-            <h2 style={{ fontSize: 32 }}>1:1 guidance with me</h2>
-            <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>
-              Private sessions with a plan built around your goals, body and schedule. After you book, I&apos;ll reach out to fix our session times.
-            </p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
-            {coaching.map((p) => (
-              <div key={p.id} className="card" style={{ background: "var(--sand)", borderColor: "var(--sand-line)", display: "flex", flexDirection: "column", gap: 12 }}>
-                <h3 style={{ fontSize: 24 }}>{p.name}</h3>
-                <p className="display" style={{ fontSize: 30 }}>{inr(p.price_paise)}</p>
-                <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>{p.description}</p>
-                <div style={{ marginTop: "auto" }}>
-                  <BuyButton itemType="plan" itemId={p.id} signedIn successPath="/app/account?welcome=coaching" label="Book sessions" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
+      <section id="coaching" className="card" style={{ background: "var(--sand)", borderColor: "var(--sand-line)", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between", scrollMarginTop: 16 }}>
+        <div style={{ flex: "1 1 380px", minWidth: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+          <h2 style={{ fontSize: 28 }}>A one-on-one conversation with me</h2>
+          <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>
+            Tell me about your body, your routine and what you&apos;d like to change. We&apos;ll talk it through and decide together how I can help.
+          </p>
+        </div>
+        <Link className="btn" href="/programs#connect">Request a conversation</Link>
+      </section>
     </>
   );
 }

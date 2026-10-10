@@ -43,7 +43,7 @@ export default async function Account({ searchParams }: { searchParams: Promise<
         </section>
 
         <section className="card" style={{ background: "var(--sand)", display: "flex", flexDirection: "column", gap: 12 }}>
-          <h2 style={{ fontSize: 24 }}>1-on-1 coaching</h2>
+          <h2 style={{ fontSize: 24 }}>One-on-one with me</h2>
           {(credits.data ?? []).length > 0 ? (
             <>
               <p className="display" style={{ fontSize: 26 }}>{sessionsLeft} {sessionsLeft === 1 ? "session" : "sessions"} left</p>
@@ -52,8 +52,8 @@ export default async function Account({ searchParams }: { searchParams: Promise<
           ) : (
             <p style={{ color: "var(--sand-ink)" }}>Personal sessions with a plan built for you.</p>
           )}
-          <Link className="btn btn-outline" href="/app/membership#coaching" style={{ alignSelf: "flex-start" }}>
-            {(credits.data ?? []).length > 0 ? "Add more sessions" : "See coaching"}
+          <Link className="btn btn-outline" href="/programs#connect" style={{ alignSelf: "flex-start" }}>
+            Request a conversation
           </Link>
         </section>
       </div>

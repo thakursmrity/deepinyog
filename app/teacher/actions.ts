@@ -268,7 +268,24 @@ export async function updateCourse(courseId: string, _prev: FormState, form: For
   if (error) return { error: error.message };
   revalidatePath(`/teacher/courses/${courseId}`);
   revalidatePath("/courses");
+  revalidatePath("/programs");
+  revalidatePath("/");
   return { ok: "Saved." };
+}
+
+// Removes a program or course. Anything someone has paid for is kept: close it instead.
+export async function deleteCourse(courseId: string) {
+  const { supabase } = await requireTeacher();
+  const [{ count: paid }, { count: enrolled }] = await Promise.all([
+    supabase.from("payments").select("id", { count: "exact", head: true }).eq("item_type", "course").eq("item_id", courseId).eq("status", "paid"),
+    supabase.from("enrollments").select("user_id", { count: "exact", head: true }).eq("course_id", courseId),
+  ]);
+  if ((paid ?? 0) > 0 || (enrolled ?? 0) > 0) redirect(`/teacher/courses/${courseId}?keep=1`);
+  await supabase.from("courses").delete().eq("id", courseId);
+  revalidatePath("/teacher/courses");
+  revalidatePath("/programs");
+  revalidatePath("/");
+  redirect("/teacher/courses?deleted=1");
 }
 
 // ---------- Plans and prices ----------

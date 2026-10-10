@@ -48,3 +48,12 @@ export const PRACTICE_WORDS = ["Hatha Yoga", "Pranayama", "Meditation", "Yoga Ni
 
 // YouTube videos shown on the home page. Add video ids (the part after "v=" in the link).
 export const YOUTUBE_VIDEOS: { id: string; title: string }[] = [];
+
+// The practices explained on the home page, with what each word means.
+export const YOGA_PRACTICES = [
+  { name: "Hatha Yoga", meaning: "Ha, the sun. Tha, the moon.", body: "Postures that balance effort and ease, building strength, flexibility and steadiness." },
+  { name: "Pranayama", meaning: "Prana, life force. Ayama, to extend.", body: "Breath practices that steady the mind and bring energy back into the body." },
+  { name: "Dhyana", meaning: "Meditation, resting attention.", body: "Learning to sit with the mind gently, until it becomes quiet and clear on its own." },
+  { name: "Yoga Nidra", meaning: "Yogic sleep.", body: "Deep, guided rest done lying down, where the body relaxes fully while you stay softly aware." },
+  { name: "Marma", meaning: "The body's vital points.", body: "An Ayurvedic practice of gentle touch on points where tissues and energy meet, to release held tension." },
+];

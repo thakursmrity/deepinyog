@@ -5,7 +5,8 @@ import { formatDate } from "@/lib/format";
 import { coursePrice, inr } from "@/lib/money";
 import { CourseForm } from "./CourseForm";
 
-export default async function TeacherCourses() {
+export default async function TeacherCourses({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
+  const { deleted } = await searchParams;
   const { supabase } = await requireTeacher();
   const [courses, waitlist, enrollments] = await Promise.all([
     supabase.from("courses").select("id, slug, title, status, price_paise, early_bird_price_paise, early_bird_until, starts_on").order("created_at", { ascending: false }),
@@ -24,6 +25,7 @@ export default async function TeacherCourses() {
   return (
     <>
       <h1 style={{ fontSize: 38 }}>Programs and courses</h1>
+      {deleted ? <p className="success" role="status">Deleted. It no longer shows on the website.</p> : null}
       <section className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {(courses.data ?? []).length === 0 ? <p style={{ color: "var(--muted)" }}>No courses yet. Create your first one below; start it as Upcoming to collect a waitlist.</p> : null}
         {(courses.data ?? []).map((c) => (

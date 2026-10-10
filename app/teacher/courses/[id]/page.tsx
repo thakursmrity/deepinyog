@@ -2,14 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireTeacher } from "@/lib/auth";
 import { formatDate } from "@/lib/format";
+import { deleteCourse } from "../../actions";
 import { CourseForm, type CourseInput } from "../CourseForm";
 
 type Person = { full_name: string; email: string | null };
 const person = (p: Person | Person[] | null) => (Array.isArray(p) ? p[0] : p);
 
-export default async function ManageCourse({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ created?: string }> }) {
+export default async function ManageCourse({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ created?: string; keep?: string }> }) {
   const { id } = await params;
-  const { created } = await searchParams;
+  const { created, keep } = await searchParams;
   const { supabase } = await requireTeacher();
 
   const { data: course } = await supabase
@@ -34,6 +35,7 @@ export default async function ManageCourse({ params, searchParams }: { params: P
         <h1 style={{ fontSize: 36 }}>{course.title}</h1>
         <a href={`/courses/${course.slug}`} target="_blank" rel="noopener noreferrer">View public page</a>
       </div>
+      {keep ? <p className="error" role="alert">Students have already joined this one, so it can&apos;t be deleted. Set its status to Closed instead to hide it from the website.</p> : null}
       {created ? <p className="success" role="status">Course created. Upload its lessons in the video library and pick this course.</p> : null}
 
       <div className="row">
@@ -81,6 +83,9 @@ export default async function ManageCourse({ params, searchParams }: { params: P
           </section>
         </div>
       </div>
+      <form action={deleteCourse.bind(null, course.id)} style={{ alignSelf: "flex-start" }}>
+        <button type="submit" className="btn btn-outline btn-small" style={{ color: "var(--danger)" }}>Delete this program</button>
+      </form>
     </>
   );
 }
