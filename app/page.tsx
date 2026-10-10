@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { COURSE_FIELDS, type CourseRow } from "@/components/CourseCard";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
-import { ABOUT, HERO_TEXT, PHOTOS, PRACTICE_WORDS, TEACHER, MARMA, YOGA_LIMBS } from "@/lib/content";
+import { ABOUT, HERO_TEXT, PHOTOS, PRACTICE_WORDS, TEACHER, YOGA_LIMBS } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
@@ -95,14 +95,6 @@ export default async function Home() {
               </article>
             ))}
           </div>
-          <article style={{ background: "var(--sage)", borderRadius: 28, padding: "26px 28px", display: "flex", flexWrap: "wrap", gap: "12px 40px", alignItems: "center" }}>
-            <div style={{ flex: "0 1 260px", display: "flex", flexDirection: "column", gap: 6 }}>
-              <p style={{ fontSize: 12, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--sage-ink)", margin: 0 }}>Alongside yoga</p>
-              <h3 style={{ fontSize: 26 }}>{MARMA.title}</h3>
-              <p style={{ color: "var(--sage-ink)", fontSize: 14, margin: 0, fontStyle: "italic" }}>{MARMA.via}</p>
-            </div>
-            <p style={{ flex: "1 1 360px", minWidth: 0, color: "var(--ink)", lineHeight: 1.65, margin: 0 }}>{MARMA.body}</p>
-          </article>
           <Link className="btn btn-outline" href="/programs#paths" style={{ alignSelf: "flex-start" }}>Find the practice for you</Link>
         </section>
 

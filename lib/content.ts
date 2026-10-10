@@ -56,10 +56,3 @@ export const YOGA_LIMBS = [
   { limb: "Limb 5 of 8", name: "Pratyahara", via: "Experienced through Yoga Nidra", body: "Turning the senses gently inward. In Yoga Nidra the body rests completely while you stay softly aware." },
   { limb: "Limb 7 of 8", name: "Dhyana", via: "Meditation", body: "Attention that rests without effort, until the mind grows quiet and clear on its own." },
 ];
-
-// Marma comes from Ayurveda, yoga's sister science, so it is shown beside yoga rather than inside it.
-export const MARMA = {
-  title: "Marma",
-  via: "From Ayurveda, yoga's sister science",
-  body: "The classical texts describe 107 marma points, where muscle, vessels, tendons, bone and joints meet. Gentle touch on these points helps release held tension and restore the flow of prana. I bring Marma into my therapy work alongside yoga.",
-};
