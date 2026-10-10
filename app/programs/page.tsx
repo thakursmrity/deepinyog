@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { COURSE_FIELDS, KIND_LABEL, type CourseRow } from "@/components/CourseCard";
-import { InstagramReels } from "@/components/InstagramReels";
 import { ProgramMotif } from "@/components/ProgramMotif";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
-import { INSTAGRAM_REELS, PHOTOS, TEACHER } from "@/lib/content";
+import { PHOTOS, TEACHER } from "@/lib/content";
 import { formatDate } from "@/lib/format";
-import { LINKS, external } from "@/lib/links";
 import { getPrograms } from "@/lib/programs";
 import { createClient } from "@/lib/supabase/server";
-import { youtubeThumb } from "@/lib/youtube";
 
 export const metadata = { title: "Programs | Deepinyog" };
 export const dynamic = "force-dynamic";
@@ -61,14 +58,12 @@ function when(c: CourseRow) {
 
 export default async function Programs() {
   const supabase = await createClient();
-  const [{ programs }, { data: courses }, { data: videos }] = await Promise.all([
+  const [{ programs }, { data: courses }] = await Promise.all([
     getPrograms(supabase),
     supabase.from("courses").select(COURSE_FIELDS).in("status", ["open", "upcoming"]).order("starts_on", { ascending: true, nullsFirst: false }),
-    supabase.from("videos").select("id, title, youtube_id").not("youtube_id", "is", null).order("created_at", { ascending: false }).limit(6),
   ]);
   const upcoming = (courses ?? []) as CourseRow[];
   const bySlug = new Map(programs.map((p) => [p.slug, p]));
-  const clips = (videos ?? []).filter((v): v is { id: string; title: string; youtube_id: string } => Boolean(v.youtube_id));
 
   return (
     <>
@@ -176,36 +171,6 @@ export default async function Programs() {
             })}
           </div>
         </section>
-
-        {/* Her videos */}
-        {clips.length > 0 || INSTAGRAM_REELS.length > 0 ? (
-          <section style={{ background: "var(--blush-soft)" }}>
-            <div className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "flex", flexDirection: "column", gap: 28 }}>
-              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
-                <div style={{ maxWidth: 600, display: "flex", flexDirection: "column", gap: 10 }}>
-                  <h2 style={{ fontSize: "clamp(32px, 4.5vw, 48px)", lineHeight: 1.05 }}>Practise with me today</h2>
-                  <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.6, margin: 0 }}>A few of my sessions to try at home, so you can feel how I teach before we begin together.</p>
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 18 }}>
-                  <a href={LINKS.youtube} {...external} style={{ fontWeight: 500 }}>My YouTube channel</a>
-                  <a href={LINKS.instagram} {...external} style={{ fontWeight: 500 }}>@deepinyog on Instagram</a>
-                </div>
-              </div>
-              {clips.length > 0 ? (
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
-                  {clips.map((v) => (
-                    <a key={v.id} href={`https://www.youtube.com/watch?v=${v.youtube_id}`} {...external} style={{ textDecoration: "none", color: "var(--ink)", background: "#fff", borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={youtubeThumb(v.youtube_id)} alt="" style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", display: "block" }} />
-                      <span style={{ padding: "14px 16px 18px", fontWeight: 500, lineHeight: 1.4 }}>{v.title}</span>
-                    </a>
-                  ))}
-                </div>
-              ) : null}
-              <InstagramReels links={INSTAGRAM_REELS} />
-            </div>
-          </section>
-        ) : null}
 
         {/* Onward to connect */}
         <section className="container" style={{ paddingTop: 80, paddingBottom: 96 }}>

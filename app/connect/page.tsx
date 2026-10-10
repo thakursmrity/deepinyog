@@ -2,7 +2,7 @@ import Link from "next/link";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
 import { PHOTOS, TEACHER } from "@/lib/content";
-import { LINKS, external } from "@/lib/links";
+import { SocialLink } from "@/components/SocialLink";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Connect | Deepinyog" };
@@ -43,8 +43,9 @@ export default async function Connect({ searchParams }: { searchParams: Promise<
                 </div>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 18 }}>
-                <a href={LINKS.instagram} {...external} style={{ fontWeight: 500 }}>Message me on Instagram</a>
-                <a href={LINKS.youtube} {...external} style={{ fontWeight: 500 }}>My YouTube channel</a>
+                <SocialLink network="instagram" label="Message me on Instagram" />
+                <SocialLink network="youtube" label="My YouTube channel" />
+                <SocialLink network="facebook" />
               </div>
             </div>
             <div style={{ flex: "1.2 1 400px", minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { MenuCloser } from "@/components/MenuCloser";
+import { SocialLink } from "@/components/SocialLink";
 import { LINKS, external } from "@/lib/links";
 import { createClient } from "@/lib/supabase/server";
 
@@ -40,9 +41,9 @@ export function PublicFooter() {
           <Link href="/about">About me</Link>
           <Link href="/programs">Programs</Link>
           <Link href="/connect">Connect</Link>
-          <a href={LINKS.instagram} {...external}>Instagram</a>
-          <a href={LINKS.youtube} {...external}>YouTube</a>
-          <a href={LINKS.facebook} {...external}>Facebook</a>
+          <SocialLink network="instagram" />
+          <SocialLink network="youtube" />
+          <SocialLink network="facebook" />
         </nav>
         <span style={{ color: "var(--muted)" }}>
           Platform by <a href={LINKS.builtBy} {...external}>Smrity</a>

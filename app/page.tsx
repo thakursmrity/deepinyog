@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { COURSE_FIELDS, type CourseRow } from "@/components/CourseCard";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
-import { ABOUT, HERO_TEXT, PHOTOS, PRACTICE_WORDS, TEACHER, YOGA_PRACTICES } from "@/lib/content";
+import { ABOUT, HERO_TEXT, PHOTOS, PRACTICE_WORDS, TEACHER, MARMA, YOGA_LIMBS } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
@@ -71,20 +71,38 @@ export default async function Home() {
                 Most people meet yoga as a set of postures. The postures are only one doorway. Yoga is a complete way of caring for yourself, through the body, the breath and the mind, so that you feel at home in all three.
               </p>
             </div>
-            <figure style={{ flex: "1 1 320px", margin: 0, background: "var(--saffron-mist)", borderRadius: 28, padding: "26px 28px" }}>
-              <blockquote style={{ margin: 0, fontFamily: "var(--font-display), serif", fontSize: 26, lineHeight: 1.3 }}>Yogas chitta vritti nirodhah</blockquote>
-              <figcaption style={{ color: "var(--soft)", marginTop: 10, lineHeight: 1.55 }}>Yoga is the settling of the movements of the mind. Patanjali, Yoga Sutra 1.2</figcaption>
+            <figure style={{ flex: "1 1 340px", margin: 0, background: "var(--saffron-mist)", borderRadius: 28, padding: "28px 30px", display: "flex", flexDirection: "column", gap: 12 }}>
+              <p lang="sa" style={{ margin: 0, fontSize: 26, lineHeight: 1.3, color: "var(--saffron-ink)" }}>योगश्चित्तवृत्तिनिरोधः</p>
+              <p style={{ margin: 0, fontFamily: "var(--font-display), serif", fontSize: 22, lineHeight: 1.3 }}>Yogas chitta vritti nirodhah</p>
+              <blockquote style={{ margin: 0, fontStyle: "italic", fontSize: 18, lineHeight: 1.55, color: "var(--soft)" }}>
+                &ldquo;Yoga is the settling of the movements of the mind.&rdquo;
+              </blockquote>
+              <figcaption style={{ fontSize: 13, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--muted)", borderTop: "1px solid var(--line)", paddingTop: 12 }}>
+                Patanjali, Yoga Sutra 1.2
+              </figcaption>
             </figure>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
-            {YOGA_PRACTICES.map((y) => (
+          <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.7, margin: 0, maxWidth: "46em" }}>
+            Patanjali describes yoga as eight limbs, from how we live with others to deep meditation. My classes work most with four of them.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 16 }}>
+            {YOGA_LIMBS.map((y) => (
               <article key={y.name} style={{ background: "#fff", border: "1px solid var(--hair)", borderRadius: 24, padding: 22, display: "flex", flexDirection: "column", gap: 8 }}>
-                <h3 style={{ fontSize: 22 }}>{y.name}</h3>
-                <p style={{ color: "var(--saffron-ink)", fontSize: 14, margin: 0, fontStyle: "italic" }}>{y.meaning}</p>
+                <p style={{ fontSize: 12, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--muted)", margin: 0 }}>{y.limb}</p>
+                <h3 style={{ fontSize: 24 }}>{y.name}</h3>
+                <p style={{ color: "var(--saffron-ink)", fontSize: 14, margin: 0, fontStyle: "italic" }}>{y.via}</p>
                 <p style={{ color: "var(--soft)", lineHeight: 1.6, margin: 0 }}>{y.body}</p>
               </article>
             ))}
           </div>
+          <article style={{ background: "var(--sage)", borderRadius: 28, padding: "26px 28px", display: "flex", flexWrap: "wrap", gap: "12px 40px", alignItems: "center" }}>
+            <div style={{ flex: "0 1 260px", display: "flex", flexDirection: "column", gap: 6 }}>
+              <p style={{ fontSize: 12, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--sage-ink)", margin: 0 }}>Alongside yoga</p>
+              <h3 style={{ fontSize: 26 }}>{MARMA.title}</h3>
+              <p style={{ color: "var(--sage-ink)", fontSize: 14, margin: 0, fontStyle: "italic" }}>{MARMA.via}</p>
+            </div>
+            <p style={{ flex: "1 1 360px", minWidth: 0, color: "var(--ink)", lineHeight: 1.65, margin: 0 }}>{MARMA.body}</p>
+          </article>
           <Link className="btn btn-outline" href="/programs#paths" style={{ alignSelf: "flex-start" }}>Find the practice for you</Link>
         </section>
 
