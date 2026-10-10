@@ -37,7 +37,7 @@ Focus and clarity
 Emotional balance', 'Start with ten minutes, sitting or lying down, and let the guidance carry you. Regular, short practice works better than occasional long sessions.', 'If anxiety feels overwhelming, please also reach out to a doctor or counsellor.', 50),
   ('Programs', 'lemurian-yoga', 'Sri Sri Lemurian Yoga', 'Return to effortless', 'Soft, flowing movements that boost energy, ease the joints, calm the busy mind and lead naturally into deep meditation.', 'Energy levels
 Joint mobility
-A calm, busy mind
+A calmer, quieter mind
 Deep meditation', 'There is nothing to achieve here. We move gently and continuously, letting the body find its own rhythm, and then rest in stillness.', '', 60),
   ('Programs', 'womens-wellness', 'Women''s Wellness', 'For every season of womanhood', 'Gentle, supportive practice through periods, pregnancy, life after childbirth and hormonal changes.', 'Periods and PMS
 Pregnancy
@@ -56,7 +56,9 @@ Habits that last
 Emotional balance
 Purpose and self-belief', 'We talk, we listen, and we find small, steady steps forward, supported by breath and reflection practices you can use every day.', '', 100)
 ) as v(grp, slug, title, tagline, summary, highlights, guidance, caution, sort)
-where not exists (select 1 from public.categories c where c.slug = v.slug);
+on conflict (slug) do update set
+  grp = excluded.grp, title = excluded.title, tagline = excluded.tagline, summary = excluded.summary,
+  highlights = excluded.highlights, guidance = excluded.guidance, caution = excluded.caution, sort = excluded.sort;
 
 insert into public.courses (slug, title, kind, status, price_paise, summary, description, schedule, hosts, register_url, starts_on)
 select 'backyourback', 'BackYourBack', 'program', 'open', 0,

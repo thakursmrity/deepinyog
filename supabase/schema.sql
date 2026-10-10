@@ -506,7 +506,7 @@ Focus and clarity
 Emotional balance', 'Start with ten minutes, sitting or lying down, and let the guidance carry you. Regular, short practice works better than occasional long sessions.', 'If anxiety feels overwhelming, please also reach out to a doctor or counsellor.', 50),
   ('Programs', 'lemurian-yoga', 'Sri Sri Lemurian Yoga', 'Return to effortless', 'Soft, flowing movements that boost energy, ease the joints, calm the busy mind and lead naturally into deep meditation.', 'Energy levels
 Joint mobility
-A calm, busy mind
+A calmer, quieter mind
 Deep meditation', 'There is nothing to achieve here. We move gently and continuously, letting the body find its own rhythm, and then rest in stillness.', '', 60),
   ('Programs', 'womens-wellness', 'Women''s Wellness', 'For every season of womanhood', 'Gentle, supportive practice through periods, pregnancy, life after childbirth and hormonal changes.', 'Periods and PMS
 Pregnancy

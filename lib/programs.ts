@@ -74,7 +74,7 @@ export const DEFAULT_PROGRAMS: Program[] = [
     title: "Sri Sri Lemurian Yoga",
     tagline: "Return to effortless",
     summary: "Soft, flowing movements that boost energy, ease the joints, calm the busy mind and lead naturally into deep meditation.",
-    highlights: "Energy levels\nJoint mobility\nA calm, busy mind\nDeep meditation",
+    highlights: "Energy levels\nJoint mobility\nA calmer, quieter mind\nDeep meditation",
     guidance: "There is nothing to achieve here. We move gently and continuously, letting the body find its own rhythm, and then rest in stillness.",
     caution: "",
     sort: 60,
