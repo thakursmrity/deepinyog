@@ -3,6 +3,7 @@ import { getAccess } from "@/lib/access";
 import { requireStudent } from "@/lib/auth";
 import { firstName, formatDate, formatDateTime, greeting, streakFrom, todayLong } from "@/lib/format";
 import { external } from "@/lib/links";
+import { getNextSteps, type LessonVideo } from "@/lib/progress";
 
 type ClassRow = { id: string; title: string; kind: string; starts_at: string; duration_minutes: number; meeting_link: string | null };
 
@@ -10,6 +11,7 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
   const { welcome } = await searchParams;
   const { supabase, profile } = await requireStudent();
   const access = await getAccess(supabase, profile.id);
+  const steps = await getNextSteps(supabase, profile.id, access);
 
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
@@ -64,6 +66,8 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
         </div>
       </div>
       {welcome === "member" ? <p className="success" role="status">Welcome, member! The full library is now open to you.</p> : null}
+
+      <PickUp steps={steps} />
 
       <div className="row">
         <div className="card" style={{ background: "var(--blush-soft)", borderColor: "var(--blush)", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -141,5 +145,61 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
         </section>
       </div>
     </>
+  );
+}
+
+function NextRow({ eyebrow, title, meta, href, cta }: { eyebrow: string; title: string; meta: string; href: string; cta: string }) {
+  return (
+    <div className="list-item" style={{ borderTop: "1px solid var(--hair)" }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p className="eyebrow" style={{ marginBottom: 4 }}>{eyebrow}</p>
+        <p style={{ fontWeight: 500 }}>{title}</p>
+        {meta ? <p style={{ color: "var(--muted)", fontSize: 14 }}>{meta}</p> : null}
+      </div>
+      <Link className="btn btn-small" href={href}>{cta}</Link>
+    </div>
+  );
+}
+
+const minutes = (v: LessonVideo) => (v.duration_minutes ? `${v.duration_minutes} min` : "");
+
+// Where to pick up: the video they left halfway, the next day of each program, and one fresh suggestion.
+function PickUp({ steps }: { steps: Awaited<ReturnType<typeof getNextSteps>> }) {
+  const { continueVideo, programs, recommended } = steps;
+  const active = programs.filter((p) => p.total > 0);
+  if (!continueVideo && active.length === 0 && !recommended) return null;
+
+  return (
+    <section className="card" style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <h2 style={{ fontSize: 24, marginBottom: 8 }}>Pick up where you left off</h2>
+      {continueVideo ? (
+        <NextRow eyebrow="Continue watching" title={continueVideo.title} meta={minutes(continueVideo)} href={`/app/videos/${continueVideo.id}`} cta="Continue" />
+      ) : null}
+      {active.map((p) => {
+        const pct = Math.round((p.finished / p.total) * 100);
+        return (
+          <div key={p.id} className="list-item" style={{ borderTop: "1px solid var(--hair)", flexWrap: "wrap" }}>
+            <div style={{ flex: "1 1 240px", minWidth: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+              <p className="eyebrow" style={{ marginBottom: 0 }}>{p.title}</p>
+              <p style={{ fontWeight: 500 }}>
+                {p.next ? `${p.kind === "program" ? "Day" : "Lesson"} ${p.next.day}: ${p.next.title}` : "All done. Beautifully completed."}
+              </p>
+              <div role="img" aria-label={`${p.finished} of ${p.total} done`} style={{ height: 8, borderRadius: 4, background: "var(--line)", overflow: "hidden", maxWidth: 360 }}>
+                <span style={{ display: "block", height: "100%", width: `${pct}%`, background: "var(--sage-ink)" }} />
+              </div>
+              <p style={{ color: "var(--muted)", fontSize: 14 }}>{p.finished} of {p.total} done</p>
+            </div>
+            {p.next ? (
+              <Link className="btn btn-small" href={`/app/videos/${p.next.id}`}>Start {p.kind === "program" ? `day ${p.next.day}` : "lesson"}</Link>
+            ) : (
+              <Link className="btn btn-outline btn-small" href="/app/courses">Review</Link>
+            )}
+          </div>
+        );
+      })}
+      {recommended ? (
+        <NextRow eyebrow="Try something new" title={recommended.title} meta={minutes(recommended)} href={`/app/videos/${recommended.id}`} cta="Watch" />
+      ) : null}
+    </section>
   );
 }

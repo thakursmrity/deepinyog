@@ -19,6 +19,8 @@ export function VideoRow({
   lockedLabel,
   done = false,
   youtubeId = null,
+  label = "",
+  next = false,
 }: {
   id: string;
   title: string;
@@ -28,9 +30,11 @@ export function VideoRow({
   lockedLabel: string;
   done?: boolean;
   youtubeId?: string | null;
+  label?: string;
+  next?: boolean;
 }) {
   return (
-    <div className="list-item" style={{ borderTop: "1px solid var(--hair)" }}>
+    <div className="list-item" style={{ borderTop: "1px solid var(--hair)", ...(next ? { background: "var(--blush-soft)", borderRadius: 12 } : {}) }}>
       <div className="thumb" style={{ background: unlocked ? "var(--leaf)" : "var(--tint)", color: "var(--muted)", overflow: "hidden", position: "relative" }}>
         {youtubeId ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -39,6 +43,9 @@ export function VideoRow({
         {unlocked ? null : <LockIcon />}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
+        {label || next ? (
+          <p className="eyebrow" style={{ marginBottom: 2 }}>{[label, next ? "Up next" : ""].filter(Boolean).join(" · ")}</p>
+        ) : null}
         <p style={{ fontWeight: 500 }}>{title}</p>
         <p style={{ color: "var(--muted)", fontSize: 14 }}>{minutes ? `${minutes} min` : ""}</p>
       </div>

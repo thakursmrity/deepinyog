@@ -3,8 +3,8 @@
 The website and learning platform for Deepinyog.
 
 - **Website**: home, courses, membership and coaching prices, enquiry form. Anyone can sign up free with email or Google.
-- **/app** (students): free videos, members library, my courses, streaks and progress, teacher notes, membership and payments.
-- **/teacher**: sales and revenue, enquiries, courses with waitlists and early-bird prices, video library with access levels, classes and attendance, prices, coaching sessions, and giving access by hand.
+- **/app** (students): free videos, members library, my courses with day-wise lessons, a pick-up-where-you-left-off panel (continue watching, next program day, a fresh suggestion), streaks, teacher notes, membership and payments.
+- **/teacher**: platform health (activation, conversion, renewal, videos published, most watched), sales and revenue, enquiries, courses with waitlists and early-bird prices, video library with access levels, classes and attendance, prices, coaching sessions, and giving access by hand.
 - **Payments**: Razorpay checkout for membership passes, courses and coaching packs, confirmed by signature check and a webhook.
 
 Built with Next.js on Vercel and Supabase (database, logins, video storage).

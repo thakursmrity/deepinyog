@@ -38,15 +38,24 @@ export default async function MyCourses({ searchParams }: { searchParams: Promis
       {mine.map((c) => {
         const list = (lessons ?? []).filter((l) => l.course_id === c.id);
         const finished = list.filter((l) => done.has(l.id)).length;
+        const nextId = list.find((l) => !done.has(l.id))?.id;
+        const unit = c.kind === "program" ? "Day" : "Lesson";
+        const pct = list.length ? Math.round((finished / list.length) * 100) : 0;
         return (
           <section key={c.id} className="card" style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: 10, alignItems: "baseline", marginBottom: 8 }}>
               <h2 style={{ fontSize: 26 }}>{c.title}</h2>
               {list.length > 0 ? <span style={{ color: "var(--muted)" }}>{finished} of {list.length} done</span> : null}
             </div>
+            {list.length > 0 ? (
+              <div role="img" aria-label={`${finished} of ${list.length} done`} style={{ height: 8, borderRadius: 4, background: "var(--line)", overflow: "hidden", marginBottom: 8 }}>
+                <span style={{ display: "block", height: "100%", width: `${pct}%`, background: "var(--sage-ink)" }} />
+              </div>
+            ) : null}
+            {list.length > 0 && !nextId ? <p className="success" role="status">You completed every {unit.toLowerCase()}. Well done.</p> : null}
             {list.length === 0 ? <p style={{ color: "var(--muted)" }}>Lessons will appear here as soon as they&apos;re added.</p> : null}
-            {list.map((l) => (
-              <VideoRow key={l.id} id={l.id} title={l.title} minutes={l.duration_minutes} unlocked lockedHref="" lockedLabel="" done={done.has(l.id)} />
+            {list.map((l, i) => (
+              <VideoRow key={l.id} id={l.id} title={l.title} minutes={l.duration_minutes} unlocked lockedHref="" lockedLabel="" done={done.has(l.id)} label={`${unit} ${i + 1}`} next={l.id === nextId} />
             ))}
           </section>
         );

@@ -42,7 +42,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             <span className="pill" style={{ background: "var(--blush-soft)", color: "var(--ink)" }}>{KIND_LABEL[c.kind] ?? "Course"}</span>
             <StatusPill status={c.status} />
-            {c.included_in_membership ? <span className="pill">Included in membership</span> : null}
+            {user && c.included_in_membership ? <span className="pill">Included in membership</span> : null}
           </div>
           <h1 style={{ fontSize: "clamp(34px, 5vw, 50px)", lineHeight: 1.1 }}>{c.title}</h1>
           {c.summary ? <p style={{ fontSize: 19, color: "var(--soft)", lineHeight: 1.6 }}>{c.summary}</p> : null}
