@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { MenuCloser } from "@/components/MenuCloser";
 import { SocialLink } from "@/components/SocialLink";
-import { LINKS, external } from "@/lib/links";
 import { createClient } from "@/lib/supabase/server";
 
 // A short, calm menu. Each item is its own page.
@@ -45,9 +44,6 @@ export function PublicFooter() {
           <SocialLink network="youtube" />
           <SocialLink network="facebook" />
         </nav>
-        <span style={{ color: "var(--muted)" }}>
-          Platform by <a href={LINKS.builtBy} {...external}>Smrity</a>
-        </span>
       </div>
     </footer>
   );
