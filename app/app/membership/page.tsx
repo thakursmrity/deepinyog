@@ -1,3 +1,5 @@
+import { MEMBERSHIP_ON } from "@/lib/features";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BuyButton } from "@/components/BuyButton";
 import { getAccess } from "@/lib/access";
@@ -11,6 +13,7 @@ type Plan = { id: string; kind: "membership" | "coaching"; name: string; descrip
 
 // Only reachable when signed in. New members land here right after signing up.
 export default async function Membership({ searchParams }: { searchParams: Promise<{ welcome?: string }> }) {
+  if (!MEMBERSHIP_ON) redirect("/app");
   const { welcome } = await searchParams;
   const { supabase, profile } = await requireStudent();
   const [{ data }, access] = await Promise.all([

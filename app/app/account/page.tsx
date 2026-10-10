@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { getAccess } from "@/lib/access";
 import { requireStudent } from "@/lib/auth";
 import { formatDate } from "@/lib/format";
@@ -19,19 +20,20 @@ export default async function Account({ searchParams }: { searchParams: Promise<
 
   return (
     <>
-      <h1 style={{ fontSize: 38 }}>Membership and account</h1>
+      <h1 style={{ fontSize: 38 }}>{MEMBERSHIP_ON ? "Membership and account" : "My account"}</h1>
       {welcome === "coaching" ? (
         <p className="success" role="status">Your coaching pack is confirmed. You&apos;ll be contacted to set your session times.</p>
       ) : null}
 
       <div className="row">
+        {MEMBERSHIP_ON || access.memberUntil ? (
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <h2 style={{ fontSize: 24 }}>Membership</h2>
           {access.memberUntil ? (
             <>
               <p className="display" style={{ fontSize: 26 }}>Active until {formatDate(access.memberUntil)}</p>
               <p style={{ color: "var(--muted)" }}>Memberships don&apos;t renew on their own. Extend any time and the days are added on top.</p>
-              <Link className="btn btn-outline" href="/app/membership" style={{ alignSelf: "flex-start" }}>Extend membership</Link>
+              {MEMBERSHIP_ON ? <Link className="btn btn-outline" href="/app/membership" style={{ alignSelf: "flex-start" }}>Extend membership</Link> : null}
             </>
           ) : (
             <>
@@ -41,6 +43,7 @@ export default async function Account({ searchParams }: { searchParams: Promise<
             </>
           )}
         </section>
+        ) : null}
 
         <section className="card" style={{ background: "var(--sand)", display: "flex", flexDirection: "column", gap: 12 }}>
           <h2 style={{ fontSize: 24 }}>One-on-one with me</h2>

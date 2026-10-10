@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { notFound } from "next/navigation";
 import { ProgramMotif } from "@/components/ProgramMotif";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
@@ -111,7 +112,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
           <section className="container" style={{ paddingTop: 56 }}>
             <div className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               <h2 style={{ fontSize: 30, marginBottom: 8 }}>Practices</h2>
-              {videos.map((v) => {
+              {videos.filter((v) => MEMBERSHIP_ON || v.access !== "members" || Boolean(access?.memberUntil)).map((v) => {
                 const unlocked = Boolean(access && canWatch(v, access, byId));
                 const lock = lockFor(v);
                 return <VideoRow key={v.id} youtubeId={v.youtube_id} id={v.id} title={v.title} minutes={v.duration_minutes} unlocked={unlocked} lockedHref={lock.href} lockedLabel={lock.label} />;

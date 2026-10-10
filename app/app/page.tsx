@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { getAccess } from "@/lib/access";
 import { requireStudent } from "@/lib/auth";
 import { firstName, formatDate, formatDateTime, greeting, streakFrom, todayLong } from "@/lib/format";
@@ -55,9 +56,9 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
         {access.memberUntil ? (
           <span className="pill" style={{ fontSize: 14 }}>Member until {formatDate(access.memberUntil)}</span>
-        ) : (
+        ) : MEMBERSHIP_ON ? (
           <Link className="btn btn-outline btn-small" href="/app/membership">Become a member</Link>
-        )}
+        ) : null}
         {streak > 0 ? (
           <p style={{ background: "var(--surface)", padding: "10px 16px", borderRadius: 999, fontWeight: 500 }}>
             {streak} day practice streak

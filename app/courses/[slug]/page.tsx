@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { notFound } from "next/navigation";
 import { BuyButton } from "@/components/BuyButton";
 import { COURSE_FIELDS, KIND_LABEL, StatusPill, type CourseRow } from "@/components/CourseCard";
@@ -42,7 +43,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             <span className="pill" style={{ background: "var(--blush-soft)", color: "var(--ink)" }}>{KIND_LABEL[c.kind] ?? "Course"}</span>
             <StatusPill status={c.status} />
-            {user && c.included_in_membership ? <span className="pill">Included in membership</span> : null}
+            {MEMBERSHIP_ON && user && c.included_in_membership ? <span className="pill">Included in membership</span> : null}
           </div>
           <h1 style={{ fontSize: "clamp(34px, 5vw, 50px)", lineHeight: 1.1 }}>{c.title}</h1>
           {c.summary ? <p style={{ fontSize: 19, color: "var(--soft)", lineHeight: 1.6 }}>{c.summary}</p> : null}
@@ -96,7 +97,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
             <p style={{ color: "var(--muted)" }}>This one is closed for now.</p>
           )}
 
-          {user && !owned && c.included_in_membership ? (
+          {MEMBERSHIP_ON && user && !owned && c.included_in_membership ? (
             <p style={{ fontSize: 14, color: "var(--muted)" }}>
               Also included with <Link href="/app/membership">membership</Link>.
             </p>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { VideoRow } from "@/components/VideoRow";
 import { canWatch, getAccess, type CourseMeta, type VideoMeta } from "@/lib/access";
 import { requireStudent } from "@/lib/auth";
@@ -37,9 +38,9 @@ export default async function Library({ searchParams }: { searchParams: Promise<
         <h1 style={{ fontSize: 38 }}>Video library</h1>
         {access.memberUntil ? (
           <span className="pill" style={{ fontSize: 14 }}>Member until {formatDate(access.memberUntil)}</span>
-        ) : (
+        ) : MEMBERSHIP_ON ? (
           <Link className="btn" href="/app/membership">Unlock everything with membership</Link>
-        )}
+        ) : null}
       </div>
 
       {topics.length > 0 ? (
@@ -59,7 +60,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
         ))}
       </section>
 
-      {members.length > 0 ? (
+      {members.length > 0 && (MEMBERSHIP_ON || access.memberUntil) ? (
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <h2 style={{ fontSize: 24, marginBottom: 8 }}>Members library</h2>
           {members.map((v) => (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { formatDate } from "@/lib/format";
 import { coursePrice, earlyBirdActive, inr } from "@/lib/money";
 
@@ -39,7 +40,7 @@ export function CourseCard({ c, owned = false, showPrice = false }: { c: CourseR
         <span className="pill" style={{ background: "var(--blush-soft)", color: "var(--ink)" }}>{KIND_LABEL[c.kind] ?? "Course"}</span>
         <StatusPill status={c.status} />
         {owned ? <span className="pill">Yours</span> : null}
-        {showPrice && c.included_in_membership ? <span className="pill">Included in membership</span> : null}
+        {MEMBERSHIP_ON && showPrice && c.included_in_membership ? <span className="pill">Included in membership</span> : null}
       </div>
       <h3 style={{ fontSize: 26 }}>{c.title}</h3>
       {c.summary ? <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>{c.summary}</p> : null}

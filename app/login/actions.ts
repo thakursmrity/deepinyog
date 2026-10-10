@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -49,7 +50,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   // New members see the welcome and membership page first, unless they came from somewhere specific.
-  const next = safePath(String(formData.get("next") ?? "")) || "/app/membership?welcome=1";
+  const next = safePath(String(formData.get("next") ?? "")) || (MEMBERSHIP_ON ? "/app/membership?welcome=1" : "/app");
   if (!fullName || !email) return { error: "Please add your name and email." };
   if (password.length < 8) return { error: "Use a password of at least 8 characters." };
 
@@ -85,7 +86,7 @@ export async function signInWithGoogle(formData: FormData) {
 }
 
 export async function finishSignIn(userId: string, next: string, isNew = false) {
-  return homeFor(userId, next || (isNew ? "/app/membership?welcome=1" : ""));
+  return homeFor(userId, next || (isNew ? (MEMBERSHIP_ON ? "/app/membership?welcome=1" : "/app") : ""));
 }
 
 export async function signOut() {

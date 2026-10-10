@@ -1,4 +1,5 @@
 import { Shell } from "@/components/Shell";
+import { MEMBERSHIP_ON } from "@/lib/features";
 import { requireStudent } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
         { href: "/app/courses", label: "My courses" },
         { href: "/programs", label: "All programs" },
         { href: "/courses", label: "Live sessions" },
-        { href: "/app/membership", label: "Membership" },
+        ...(MEMBERSHIP_ON ? [{ href: "/app/membership", label: "Membership" }] : []),
         { href: "/app/account", label: "My account" },
       ]}
     >
