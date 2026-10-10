@@ -82,9 +82,6 @@ export default async function Home() {
               </figcaption>
             </figure>
           </div>
-          <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.7, margin: 0, maxWidth: "46em" }}>
-            Patanjali describes yoga as eight limbs, from how we live with others to deep meditation. My classes work most with four of them.
-          </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 16 }}>
             {YOGA_LIMBS.map((y) => (
               <article key={y.name} style={{ background: "#fff", border: "1px solid var(--hair)", borderRadius: 24, padding: 22, display: "flex", flexDirection: "column", gap: 8 }}>
