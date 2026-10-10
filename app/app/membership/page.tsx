@@ -93,7 +93,7 @@ export default async function Membership({ searchParams }: { searchParams: Promi
             Tell me about your body, your routine and what you&apos;d like to change. We&apos;ll talk it through and decide together how I can help.
           </p>
         </div>
-        <Link className="btn" href="/programs#connect">Request a conversation</Link>
+        <Link className="btn" href="/connect">Request a conversation</Link>
       </section>
     </>
   );

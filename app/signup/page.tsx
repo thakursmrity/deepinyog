@@ -1,36 +1,7 @@
-import Link from "next/link";
-import { GoogleButton, SignUpForm } from "@/components/AuthForms";
-import { Logo } from "@/components/Logo";
+import { redirect } from "next/navigation";
 
-export const metadata = { title: "Sign up | Deepinyog" };
-
+// Registration now lives on the login page. Older links land there.
 export default async function SignupPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
-  const { next = "" } = await searchParams;
-  const google = process.env.NEXT_PUBLIC_GOOGLE_LOGIN === "on";
-
-  return (
-    <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div className="card" style={{ width: "100%", maxWidth: 440, display: "flex", flexDirection: "column", gap: 22 }}>
-        <Link href="/" style={{ textDecoration: "none" }}><Logo /></Link>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <h1 style={{ fontSize: 32 }}>Begin your practice</h1>
-          <ul style={{ margin: 0, paddingLeft: 20, color: "var(--soft)", lineHeight: 1.8 }}>
-            <li>Guided practices for body, breath, mind and soul</li>
-            <li>Your streak and progress, kept for you</li>
-            <li>Live programs and workshops with me</li>
-          </ul>
-        </div>
-        {google ? (
-          <>
-            <GoogleButton next={next} />
-            <p style={{ textAlign: "center", color: "var(--muted)", fontSize: 14 }}>or with email</p>
-          </>
-        ) : null}
-        <SignUpForm next={next} />
-        <p style={{ color: "var(--muted)" }}>
-          Already have an account? <Link href={`/login${next ? `?next=${encodeURIComponent(next)}` : ""}`}>Log in</Link>
-        </p>
-      </div>
-    </main>
-  );
+  const { next } = await searchParams;
+  redirect(`/login?mode=register${next ? `&next=${encodeURIComponent(next)}` : ""}`);
 }

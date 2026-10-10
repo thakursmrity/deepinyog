@@ -4,7 +4,7 @@ import { MenuCloser } from "@/components/MenuCloser";
 import { LINKS, external } from "@/lib/links";
 import { createClient } from "@/lib/supabase/server";
 
-// A short, calm menu: home, about me, programs, and the way in.
+// A short, calm menu. Each item is its own page.
 export async function PublicHeader() {
   const supabase = await createClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -19,15 +19,13 @@ export async function PublicHeader() {
         </Link>
         <nav aria-label="Main" className="site-nav">
           <Link className="nav-link" href="/">Home</Link>
-          <Link className="nav-link" href="/#about">About me</Link>
+          <Link className="nav-link" href="/about">About me</Link>
           <Link className="nav-link" href="/programs">Programs</Link>
+          <Link className="nav-link" href="/connect">Connect</Link>
           {user ? (
             <Link className="btn-login" href="/app">My practice</Link>
           ) : (
-            <>
-              <Link className="nav-link" href="/login">Log in</Link>
-              <Link className="btn-login" href="/signup">Sign up</Link>
-            </>
+            <Link className="btn-login" href="/login">Log in</Link>
           )}
         </nav>
       </div>
@@ -41,9 +39,9 @@ export function PublicFooter() {
       <div className="container" style={{ paddingTop: 28, paddingBottom: 28, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 20, fontSize: 15 }}>
         <Logo tagline />
         <nav aria-label="Elsewhere" style={{ display: "flex", flexWrap: "wrap", gap: 22 }}>
-          <Link href="/#about">About me</Link>
+          <Link href="/about">About me</Link>
           <Link href="/programs">Programs</Link>
-          <Link href="/programs#connect">Connect</Link>
+          <Link href="/connect">Connect</Link>
           <a href={LINKS.instagram} {...external}>Instagram</a>
           <a href={LINKS.youtube} {...external}>YouTube</a>
           <a href={LINKS.facebook} {...external}>Facebook</a>

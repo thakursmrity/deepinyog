@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { COURSE_FIELDS, KIND_LABEL, type CourseRow } from "@/components/CourseCard";
-import { EnquiryForm } from "@/components/EnquiryForm";
 import { InstagramReels } from "@/components/InstagramReels";
 import { ProgramMotif } from "@/components/ProgramMotif";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
@@ -62,17 +61,14 @@ function when(c: CourseRow) {
 
 export default async function Programs() {
   const supabase = await createClient();
-  const [{ programs }, { data: courses }, { data: videos }, { data: auth }] = await Promise.all([
+  const [{ programs }, { data: courses }, { data: videos }] = await Promise.all([
     getPrograms(supabase),
     supabase.from("courses").select(COURSE_FIELDS).in("status", ["open", "upcoming"]).order("starts_on", { ascending: true, nullsFirst: false }),
     supabase.from("videos").select("id, title, youtube_id").not("youtube_id", "is", null).order("created_at", { ascending: false }).limit(6),
-    supabase.auth.getUser(),
   ]);
-  const signedIn = Boolean(auth.user);
   const upcoming = (courses ?? []) as CourseRow[];
   const bySlug = new Map(programs.map((p) => [p.slug, p]));
   const clips = (videos ?? []).filter((v): v is { id: string; title: string; youtube_id: string } => Boolean(v.youtube_id));
-  const enquiryOptions = ["A question", "A one-on-one session with me", "A program for my team or school", "Something else"];
 
   return (
     <>
@@ -99,7 +95,7 @@ export default async function Programs() {
           {upcoming.length === 0 ? (
             <div className="card" style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", justifyContent: "space-between" }}>
               <p style={{ fontSize: 18, color: "var(--soft)", margin: 0 }}>My next program is being prepared. Write to me and I&apos;ll let you know as soon as dates are set.</p>
-              <a className="btn btn-outline" href="#connect">Tell me first</a>
+              <Link className="btn btn-outline" href="/connect">Tell me first</Link>
             </div>
           ) : (
             upcoming.map((c) => (
@@ -211,33 +207,14 @@ export default async function Programs() {
           </section>
         ) : null}
 
-        {/* Connect */}
-        <section id="connect" className="container" style={{ paddingTop: 88, paddingBottom: 96, scrollMarginTop: 16 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 48, alignItems: "flex-start" }}>
-            <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 18 }}>
-              <h2 style={{ fontSize: "clamp(36px, 4.5vw, 52px)", lineHeight: 1.05 }}>Let&apos;s connect</h2>
-              <p style={{ fontSize: 18, lineHeight: 1.65, color: "var(--soft)", margin: 0, maxWidth: "26em" }}>
-                Not sure where to start? Tell me a little about yourself and I&apos;ll guide you.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                <div style={{ background: "var(--saffron-mist)", borderRadius: 20, padding: "18px 20px" }}>
-                  <p style={{ fontWeight: 600, margin: "0 0 4px" }}>Have a question?</p>
-                  <p style={{ color: "var(--soft)", margin: 0, lineHeight: 1.55 }}>About a program, your health, or how to begin. I read every message myself.</p>
-                </div>
-                <div style={{ background: "var(--sage)", borderRadius: 20, padding: "18px 20px" }}>
-                  <p style={{ fontWeight: 600, margin: "0 0 4px" }}>A one-on-one conversation</p>
-                  <p style={{ color: "var(--soft)", margin: 0, lineHeight: 1.55 }}>We talk about your body, your routine and your goals, and decide together what will help.</p>
-                </div>
-              </div>
-              {signedIn ? null : (
-                <p style={{ color: "var(--muted)", margin: 0 }}>
-                  Want to practise with me between sessions? <Link href="/signup">Sign up</Link> to open your practice space.
-                </p>
-              )}
+        {/* Onward to connect */}
+        <section className="container" style={{ paddingTop: 80, paddingBottom: 96 }}>
+          <div style={{ background: "var(--sage)", borderRadius: 32, padding: "36px 36px", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ flex: "1 1 400px", minWidth: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+              <h2 style={{ fontSize: "clamp(28px, 3.6vw, 40px)", lineHeight: 1.1 }}>Still unsure which path is yours?</h2>
+              <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.6, margin: 0 }}>Ask me a question or request a one-on-one conversation.</p>
             </div>
-            <div style={{ flex: "1.3 1 400px", minWidth: 0 }}>
-              <EnquiryForm options={enquiryOptions} />
-            </div>
+            <Link className="btn btn-sun btn-large" href="/connect">Connect with me</Link>
           </div>
         </section>
       </main>

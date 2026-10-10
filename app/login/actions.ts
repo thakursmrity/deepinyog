@@ -64,7 +64,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
     },
   });
   if (error) {
-    if (error.message.toLowerCase().includes("registered")) return { error: "This email already has an account. Please sign in." };
+    if (error.message.toLowerCase().includes("registered")) return { error: "This email already has an account. Please log in instead." };
     return { error: error.message };
   }
   // With email confirmation off, the person is signed in straight away.

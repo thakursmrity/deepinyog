@@ -7,5 +7,5 @@ export default async function Pricing() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  redirect(user ? "/app/membership" : "/signup?next=/app/membership");
+  redirect(user ? "/app/membership" : "/login?mode=register&next=/app/membership");
 }

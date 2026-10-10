@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { COURSE_FIELDS, type CourseRow } from "@/components/CourseCard";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
-import { ABOUT, HERO_TEXT, PHOTOS, PRACTICE_WORDS, QUOTE, TEACHER, YOGA_PRACTICES } from "@/lib/content";
+import { ABOUT, HERO_TEXT, PHOTOS, PRACTICE_WORDS, TEACHER, YOGA_PRACTICES } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
@@ -16,7 +16,7 @@ function sessionDates(c: CourseRow) {
 export default async function Home() {
   const supabase = await createClient();
   const [{ data: sessions }, { data: auth }] = await Promise.all([
-    supabase.from("courses").select(COURSE_FIELDS).in("status", ["open", "upcoming"]).order("starts_on", { ascending: true, nullsFirst: false }).limit(2),
+    supabase.from("courses").select(COURSE_FIELDS).in("status", ["open", "upcoming"]).order("starts_on", { ascending: true, nullsFirst: false }).limit(1),
     supabase.auth.getUser(),
   ]);
   const signedIn = Boolean(auth.user);
@@ -38,8 +38,8 @@ export default async function Home() {
               </h1>
               <p className="hero-lede">{HERO_TEXT}</p>
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 18 }}>
-                <Link className="btn btn-sun btn-large" href={signedIn ? "/app" : "/signup"}>
-                  {signedIn ? "Continue my practice" : "Sign up now"}
+                <Link className="btn btn-sun btn-large" href={signedIn ? "/app" : "/login?mode=register"}>
+                  {signedIn ? "Continue my practice" : "Begin your practice"}
                 </Link>
                 <Link href="/programs" style={{ fontWeight: 500 }}>Explore programs</Link>
               </div>
@@ -93,7 +93,7 @@ export default async function Home() {
           <section style={{ background: "var(--saffron-mist)" }}>
             <div className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "flex", flexDirection: "column", gap: 28 }}>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
-                <h2 style={{ fontSize: "clamp(34px, 4.5vw, 50px)", lineHeight: 1.05 }}>Join me live</h2>
+                <h2 style={{ fontSize: "clamp(34px, 4.5vw, 50px)", lineHeight: 1.05 }}>Coming up next</h2>
                 <Link href="/programs#upcoming" style={{ fontWeight: 500 }}>All programs</Link>
               </div>
               {live.map((c) => (
@@ -119,59 +119,26 @@ export default async function Home() {
           </section>
         ) : null}
 
-        {/* About me */}
-        <section id="about" className="container" style={{ paddingTop: 96, paddingBottom: 96, display: "flex", flexWrap: "wrap", gap: 64, alignItems: "center", scrollMarginTop: 16 }}>
-          <div style={{ flex: "1 1 300px", minWidth: 0, maxWidth: 400, aspectRatio: "4 / 5", borderRadius: "999px 999px 32px 32px", overflow: "hidden", border: "10px solid #fff", boxShadow: "0 30px 80px rgba(90, 63, 71, 0.16)" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={ABOUT.photo} alt={`${TEACHER.name} in a lunge pose at an old fort`} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%" }} />
-          </div>
-          <div style={{ flex: "1 1 460px", minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
-            <p className="quote">{QUOTE}</p>
-            <h2 style={{ fontSize: 30 }}>{ABOUT.heading}</h2>
-            {ABOUT.paragraphs.map((p) => (
-              <p key={p} style={{ fontSize: 18, lineHeight: 1.75, color: "var(--soft)", margin: 0, maxWidth: "36em" }}>{p}</p>
+        {/* Explore */}
+        <section style={{ background: "var(--ground)" }}>
+          <div className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
+            {[
+              { href: "/about", title: "About me", body: "My journey, how I teach, and the training behind it.", img: ABOUT.photo, pos: "center 60%" },
+              { href: "/programs", title: "Programs", body: "What's coming up, and a path for what you're living with.", img: PHOTOS.hero, pos: "center 40%" },
+              { href: "/connect", title: "Connect", body: "Ask a question or request a one-on-one conversation.", img: PHOTOS.nature, pos: "center 40%" },
+            ].map((c) => (
+              <Link key={c.href} href={c.href} style={{ textDecoration: "none", color: "var(--ink)", background: "#fff", borderRadius: 28, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.img} alt="" style={{ width: "100%", height: 180, objectFit: "cover", objectPosition: c.pos }} />
+                <span style={{ padding: "20px 22px 24px", display: "flex", flexDirection: "column", gap: 6 }}>
+                  <span style={{ fontFamily: "var(--font-display), serif", fontSize: 26 }}>{c.title} &rarr;</span>
+                  <span style={{ color: "var(--soft)", lineHeight: 1.55 }}>{c.body}</span>
+                </span>
+              </Link>
             ))}
-            <ul style={{ listStyle: "none", margin: "4px 0 0", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 10 }}>
-              {TEACHER.credentials.map((c) => (
-                <li key={c} style={{ display: "flex", alignItems: "center", gap: 12, fontWeight: 500 }}>
-                  <span aria-hidden="true" style={{ width: 9, height: 9, borderRadius: 999, background: "var(--saffron)", boxShadow: "0 0 0 4px var(--saffron-soft)", flexShrink: 0 }} />
-                  {c}
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
-        {/* Practise from anywhere */}
-        <section className="container">
-          <div style={{ position: "relative", borderRadius: 36, overflow: "hidden", minHeight: 380, display: "flex", alignItems: "flex-end" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={PHOTOS.nature} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
-            <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(40, 28, 24, 0) 30%, rgba(40, 28, 24, 0.62) 100%)" }} />
-            <div style={{ position: "relative", padding: "40px 40px 44px", display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: 24, width: "100%" }}>
-              <p style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: 1.15, color: "#fff", margin: 0, maxWidth: 620 }}>
-                Practise with me from wherever you are, live and online.
-              </p>
-              {signedIn ? null : (
-                <Link className="btn btn-sun btn-large" href="/signup">Sign up now</Link>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Connect */}
-        <section className="container" style={{ paddingTop: 96, paddingBottom: 96 }}>
-          <div style={{ background: "var(--blush-soft)", borderRadius: 36, padding: "44px 40px", display: "flex", flexWrap: "wrap", gap: 28, alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ flex: "1 1 420px", minWidth: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-              <h2 style={{ fontSize: "clamp(32px, 4vw, 46px)", lineHeight: 1.08 }}>Not sure where to begin?</h2>
-              <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.6, margin: 0 }}>Send me a question or ask for a one-on-one conversation. We&apos;ll find your starting point together.</p>
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-              <Link className="btn btn-sun btn-large" href="/programs#connect">Connect with me</Link>
-              <Link className="btn btn-outline btn-large" href="/programs">See programs</Link>
-            </div>
-          </div>
-        </section>
       </main>
 
       <PublicFooter />

@@ -45,7 +45,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
   }
   const access = user && videos.length ? await getAccess(supabase, user.id) : null;
   const lockFor = (v: Video) => {
-    if (!user) return { href: `/signup?next=${encodeURIComponent(`/programs/${slug}`)}`, label: "Sign up to watch" };
+    if (!user) return { href: `/login?mode=register&next=${encodeURIComponent(`/programs/${slug}`)}`, label: "Register to watch" };
     if (v.course_id && byId.get(v.course_id)) return { href: `/courses/${byId.get(v.course_id)!.slug}`, label: "Part of a course" };
     return { href: "/app/membership", label: "Unlock" };
   };
@@ -65,7 +65,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
               {p.tagline ? <p style={{ fontFamily: "var(--font-display), serif", fontSize: 26, color: "var(--saffron-ink)", margin: 0 }}>{p.tagline}</p> : null}
               {p.summary ? <p style={{ fontSize: 19, color: "var(--soft)", lineHeight: 1.65, margin: 0, maxWidth: "34em" }}>{p.summary}</p> : null}
               <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", marginTop: 6 }}>
-                <Link className="btn btn-sun btn-large" href={user ? "/app" : `/signup?next=${encodeURIComponent(`/programs/${slug}`)}`}>
+                <Link className="btn btn-sun btn-large" href={user ? "/app" : `/login?mode=register&next=${encodeURIComponent(`/programs/${slug}`)}`}>
                   {user ? "Go to my practice" : "Sign up now"}
                 </Link>
                 <a href={`/?interest=${encodeURIComponent(p.title)}#join`} style={{ fontWeight: 500 }}>Ask me about this</a>

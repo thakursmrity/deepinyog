@@ -84,7 +84,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
               <button className="btn" type="submit">Join</button>
             </form>
           ) : c.status === "open" && !user ? (
-            <Link className="btn" href={`/signup?next=${encodeURIComponent(`/courses/${c.slug}`)}`}>Sign up to join</Link>
+            <Link className="btn" href={`/login?mode=register&next=${encodeURIComponent(`/courses/${c.slug}`)}`}>Register to join</Link>
           ) : c.status === "open" ? (
             <BuyButton itemType="course" itemId={c.id} signedIn={Boolean(user)} successPath="/app/courses?welcome=1" label="Enroll now" />
           ) : c.status === "upcoming" ? (

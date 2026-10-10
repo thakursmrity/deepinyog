@@ -47,7 +47,7 @@ export function SignUpForm({ next }: { next: string }) {
         <small>At least 8 characters.</small>
       </label>
       {state.error ? <p className="error" role="alert">{state.error}</p> : null}
-      <button className="btn btn-sun" type="submit" disabled={pending}>{pending ? "Creating your account" : "Sign up"}</button>
+      <button className="btn btn-sun" type="submit" disabled={pending}>{pending ? "Creating your account" : "Register"}</button>
     </form>
   );
 }

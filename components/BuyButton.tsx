@@ -44,7 +44,7 @@ export function BuyButton({
 
   async function buy() {
     if (!signedIn) {
-      router.push(`/signup?next=${encodeURIComponent(window.location.pathname)}`);
+      router.push(`/login?mode=register&next=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
     setBusy(true);

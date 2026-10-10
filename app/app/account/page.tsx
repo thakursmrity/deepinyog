@@ -52,7 +52,7 @@ export default async function Account({ searchParams }: { searchParams: Promise<
           ) : (
             <p style={{ color: "var(--sand-ink)" }}>Personal sessions with a plan built for you.</p>
           )}
-          <Link className="btn btn-outline" href="/programs#connect" style={{ alignSelf: "flex-start" }}>
+          <Link className="btn btn-outline" href="/connect" style={{ alignSelf: "flex-start" }}>
             Request a conversation
           </Link>
         </section>
