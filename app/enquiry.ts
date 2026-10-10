@@ -1,6 +1,5 @@
 "use server";
 
-import { ENQUIRY_INTERESTS } from "@/lib/content";
 import { createAdminClient } from "@/lib/supabase/server";
 
 export type EnquiryState = { ok?: boolean; error?: string };
@@ -13,7 +12,7 @@ export async function submitEnquiry(_prev: EnquiryState, form: FormData): Promis
   const name = String(form.get("name") ?? "").trim().slice(0, 120);
   const contact = String(form.get("contact") ?? "").trim().slice(0, 160);
   const interestRaw = String(form.get("interest") ?? "");
-  const interest = ENQUIRY_INTERESTS.includes(interestRaw) ? interestRaw : "Something else";
+  const interest = interestRaw.trim().slice(0, 80) || "Something else";
   const message = String(form.get("message") ?? "").trim().slice(0, 2000);
 
   if (!name || !contact) return { error: "Please add your name and a phone number or email." };

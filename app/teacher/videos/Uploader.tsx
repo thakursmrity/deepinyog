@@ -74,7 +74,7 @@ export function Uploader({
         <label className="field">
           <span>Who can watch</span>
           <select name="access" value={access} onChange={(e) => setAccess(e.target.value)}>
-            <option value="free">Everyone with a free account</option>
+            <option value="free">Everyone who has signed up</option>
             <option value="members">Members only</option>
             <option value="course">People in a course</option>
             <option value="assigned">Only students I assign it to</option>
@@ -93,7 +93,7 @@ export function Uploader({
         ) : null}
       </div>
       <div className="field">
-        <span>Topics it helps with</span>
+        <span>Programs it belongs to</span>
         <CategoryPicker categories={categories} selected={preselected} />
       </div>
       <label className="field"><span>Description</span><textarea name="description" placeholder="What this practice helps with, and anything to be careful about" /></label>

@@ -7,7 +7,7 @@ import { deleteVideo, renameVideo, setVideoCategories, updateVideoAccess } from 
 import { Uploader } from "./Uploader";
 
 const ACCESS_LABEL: Record<string, string> = {
-  free: "Free",
+  free: "Open to all",
   members: "Members",
   course: "Course",
   assigned: "Assigned only",
@@ -46,7 +46,7 @@ export default async function VideoLibrary() {
       <div className="row">
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div>
-            <h2 style={{ fontSize: 24 }}>Free videos from YouTube</h2>
+            <h2 style={{ fontSize: 24 }}>Videos from YouTube</h2>
             <p style={{ color: "var(--muted)", marginTop: 4 }}>Paste links from her channel. Nothing to upload.</p>
           </div>
           <YouTubeAdder categories={categories} />
@@ -78,7 +78,7 @@ export default async function VideoLibrary() {
                   <p style={{ fontWeight: 500 }}>
                     {v.title}{" "}
                     <span className="pill" style={{ marginLeft: 4 }}>
-                      {v.youtube_id ? "Free · YouTube" : `${ACCESS_LABEL[v.access] ?? v.access}${v.course_id ? `: ${courseName.get(v.course_id) ?? ""}` : ""}`}
+                      {v.youtube_id ? "YouTube, open to all" : `${ACCESS_LABEL[v.access] ?? v.access}${v.course_id ? `: ${courseName.get(v.course_id) ?? ""}` : ""}`}
                     </span>
                   </p>
                   <p style={{ color: "var(--muted)", fontSize: 14 }}>
@@ -86,7 +86,7 @@ export default async function VideoLibrary() {
                     {assigned.get(v.id) ? ` · assigned to ${assigned.get(v.id)}` : ""}
                   </p>
                   <p style={{ color: "var(--muted)", fontSize: 13, marginTop: 2 }}>
-                    {tags.length ? `Topics: ${tags.map((id) => catTitle.get(id)).filter(Boolean).join(", ")}` : "No topics yet"}
+                    {tags.length ? `Programs: ${tags.map((id) => catTitle.get(id)).filter(Boolean).join(", ")}` : "Not in a program yet"}
                   </p>
                 </div>
               </div>
@@ -103,13 +103,13 @@ export default async function VideoLibrary() {
                     <div style={{ flex: "1 1 320px", minWidth: 0 }}>
                       <CategoryPicker categories={categories} selected={tags} compact />
                     </div>
-                    <button className="btn btn-outline btn-small" type="submit">Save topics</button>
+                    <button className="btn btn-outline btn-small" type="submit">Save programs</button>
                   </form>
 
                   {!v.youtube_id ? (
                     <form action={updateVideoAccess.bind(null, v.id)} style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
                       <select name="access" defaultValue={v.access} aria-label="Who can watch" style={selectStyle}>
-                        <option value="free">Free</option>
+                        <option value="free">Open to all</option>
                         <option value="members">Members</option>
                         <option value="course">Course</option>
                         <option value="assigned">Assigned only</option>

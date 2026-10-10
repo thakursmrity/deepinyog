@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GoogleButton, SignInForm } from "@/components/AuthForms";
 import { Logo } from "@/components/Logo";
 
-export const metadata = { title: "Sign in | Deepinyog" };
+export const metadata = { title: "Log in | Deepinyog" };
 
 const ERRORS: Record<string, string> = {
   google: "Google sign-in didn't work. Please try again, or use email.",
@@ -19,7 +19,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <Link href="/" style={{ textDecoration: "none" }}><Logo /></Link>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <h1 style={{ fontSize: 32 }}>Welcome back</h1>
-          <p style={{ color: "var(--muted)" }}>Sign in to continue your practice.</p>
+          <p style={{ color: "var(--muted)" }}>Log in to continue your practice.</p>
         </div>
         {error && ERRORS[error] ? <p className="error" role="alert">{ERRORS[error]}</p> : null}
         {google ? (

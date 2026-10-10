@@ -28,7 +28,7 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
         ) : null}
         <SignUpForm next={next} />
         <p style={{ color: "var(--muted)" }}>
-          Already have an account? <Link href={`/login${next ? `?next=${encodeURIComponent(next)}` : ""}`}>Sign in</Link>
+          Already have an account? <Link href={`/login${next ? `?next=${encodeURIComponent(next)}` : ""}`}>Log in</Link>
         </p>
       </div>
     </main>

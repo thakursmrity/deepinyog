@@ -115,7 +115,7 @@ export default async function TeacherOverview() {
                   return (
                     <tr key={s.id}>
                       <td><Link href={`/teacher/students/${s.id}`} style={{ fontWeight: 500 }}>{s.full_name || "Unnamed"}</Link></td>
-                      <td>{memberIds.has(s.id) ? "Member" : "Free"}</td>
+                      <td>{memberIds.has(s.id) ? "Member" : "Signed up"}</td>
                       <td>{s.goals || "Not set"}</td>
                       <td>{seen ? formatDate(seen) : "Not yet"}</td>
                       <td>{attendedBy.get(s.id) ?? 0}{groupClasses ? ` of ${groupClasses}` : ""}</td>

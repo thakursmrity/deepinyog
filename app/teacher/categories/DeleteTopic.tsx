@@ -7,10 +7,10 @@ export function DeleteTopic({ id, title }: { id: string; title: string }) {
     <form
       action={deleteCategory.bind(null, id)}
       onSubmit={(e) => {
-        if (!confirm(`Delete the topic "${title}"? Its videos stay in your video library.`)) e.preventDefault();
+        if (!confirm(`Delete the program "${title}"? Its videos stay in your video library.`)) e.preventDefault();
       }}
     >
-      <button className="btn btn-outline btn-small" type="submit">Delete topic</button>
+      <button className="btn btn-outline btn-small" type="submit">Delete program</button>
     </form>
   );
 }

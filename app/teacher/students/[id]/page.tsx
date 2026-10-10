@@ -56,7 +56,7 @@ export default async function StudentDetail({ params }: { params: Promise<{ id: 
         <div className="form-grid">
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <p style={{ fontWeight: 700 }}>Membership</p>
-            <p>{memberships.data ? `Active until ${formatDate(memberships.data.ends_at)}` : "Free account"}</p>
+            <p>{memberships.data ? `Active until ${formatDate(memberships.data.ends_at)}` : "Not a member yet"}</p>
             <form action={grantMembership.bind(null, p.id)} style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
               <input name="days" type="number" min={1} defaultValue={30} aria-label="Days" style={{ width: 80, font: "inherit", padding: "8px 10px", borderRadius: 10, border: "1px solid var(--line)" }} />
               <button className="btn btn-outline btn-small" type="submit">Give days</button>

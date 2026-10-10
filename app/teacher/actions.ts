@@ -350,8 +350,10 @@ export async function updateVideoAccess(videoId: string, form: FormData) {
 
 function categoryFields(form: FormData) {
   return {
-    grp: text(form, "grp"),
+    grp: text(form, "grp") || "Programs",
     title: text(form, "title"),
+    tagline: text(form, "tagline"),
+    highlights: text(form, "highlights"),
     summary: text(form, "summary"),
     guidance: text(form, "guidance"),
     caution: text(form, "caution"),
@@ -363,25 +365,25 @@ function categoryFields(form: FormData) {
 export async function updateCategory(categoryId: string, _prev: FormState, form: FormData): Promise<FormState> {
   const { supabase } = await requireTeacher();
   const fields = categoryFields(form);
-  if (!fields.title || !fields.grp) return { error: "Group and title are needed." };
+  if (!fields.title) return { error: "Please add a title." };
   const { error } = await supabase.from("categories").update(fields).eq("id", categoryId);
   if (error) return { error: error.message };
   revalidatePath("/teacher/categories");
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
   return { ok: "Saved." };
 }
 
 export async function createCategory(_prev: FormState, form: FormData): Promise<FormState> {
   const { supabase } = await requireTeacher();
   const fields = { ...categoryFields(form), active: true };
-  if (!fields.title || !fields.grp) return { error: "Group and title are needed." };
+  if (!fields.title) return { error: "Please add a title." };
   let slug = slugify(fields.title);
   const { data: clash } = await supabase.from("categories").select("id").eq("slug", slug).maybeSingle();
   if (clash) slug = `${slug}-${Date.now().toString(36).slice(-4)}`;
   const { data, error } = await supabase.from("categories").insert({ ...fields, slug }).select("id").single();
   if (error) return { error: error.message };
   revalidatePath("/teacher/categories");
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
   redirect(`/teacher/categories/${data.id}?new=1`);
 }
 
@@ -391,7 +393,7 @@ export async function setVideoCategories(videoId: string, form: FormData) {
   await supabase.from("video_categories").delete().eq("video_id", videoId);
   if (ids.length) await supabase.from("video_categories").insert(ids.map((category_id) => ({ video_id: videoId, category_id })));
   revalidatePath("/teacher/videos");
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
 }
 
 // ---------- YouTube videos (always free) ----------
@@ -438,9 +440,9 @@ export async function addYouTubeVideos(_prev: FormState, form: FormData): Promis
 
   revalidatePath("/teacher/videos");
   revalidatePath("/teacher/categories", "layout");
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
   const parts = [`Added ${added} ${added === 1 ? "video" : "videos"}.`];
-  if (existingByYt.size) parts.push(`${existingByYt.size} ${existingByYt.size === 1 ? "was" : "were"} already on the site${categoryIds.length ? " and now also sit in the chosen topics" : ""}.`);
+  if (existingByYt.size) parts.push(`${existingByYt.size} ${existingByYt.size === 1 ? "was" : "were"} already on the site${categoryIds.length ? " and now also sit in the chosen programs" : ""}.`);
   if (unreadable.length) parts.push(`${unreadable.length} line${unreadable.length === 1 ? "" : "s"} couldn't be read as YouTube links.`);
   return { ok: parts.join(" ") };
 }
@@ -460,7 +462,7 @@ export async function deleteCategory(categoryId: string) {
   // Removes the topic and its video links. The videos themselves stay in the library.
   await supabase.from("categories").delete().eq("id", categoryId);
   revalidatePath("/teacher/categories");
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
   redirect("/teacher/categories?deleted=1");
 }
 
@@ -469,12 +471,12 @@ export async function addVideoToCategory(categoryId: string, form: FormData) {
   const videoId = text(form, "video_id");
   if (videoId) await supabase.from("video_categories").upsert({ video_id: videoId, category_id: categoryId }, { onConflict: "video_id,category_id", ignoreDuplicates: true });
   revalidatePath(`/teacher/categories/${categoryId}`);
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
 }
 
 export async function removeVideoFromCategory(categoryId: string, videoId: string) {
   const { supabase } = await requireTeacher();
   await supabase.from("video_categories").delete().eq("video_id", videoId).eq("category_id", categoryId);
   revalidatePath(`/teacher/categories/${categoryId}`);
-  revalidatePath("/practice", "layout");
+  revalidatePath("/programs", "layout");
 }

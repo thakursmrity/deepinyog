@@ -48,7 +48,7 @@ export function CourseForm({ course }: { course?: CourseInput }) {
       <label className="field">
         <span>Outside registration link (optional)</span>
         <input name="register_url" type="url" defaultValue={c?.register_url ?? ""} placeholder="https://forms.gle/..." />
-        <small>For free programs registered elsewhere, like a Google Form. Leave empty to let people join on this site.</small>
+        <small>For programs with no fee that register elsewhere, like a Google Form. Leave empty to let people join on this site.</small>
       </label>
       <label className="field">
         <span>Description</span>
@@ -63,7 +63,7 @@ export function CourseForm({ course }: { course?: CourseInput }) {
             <option value="closed">Closed</option>
           </select>
         </label>
-        <label className="field"><span>Price (Rs)</span><input name="price" inputMode="decimal" defaultValue={rupees(c?.price_paise ?? 99900)} /><small>0 makes it free.</small></label>
+        <label className="field"><span>Price (Rs)</span><input name="price" inputMode="decimal" defaultValue={rupees(c?.price_paise ?? 99900)} /><small>0 means no fee.</small></label>
         <label className="field"><span>Early-bird price (Rs)</span><input name="early_bird_price" inputMode="decimal" defaultValue={rupees(c?.early_bird_price_paise ?? null)} /></label>
         <label className="field"><span>Early-bird ends</span><input name="early_bird_until" type="date" defaultValue={c?.early_bird_until ?? ""} /></label>
         <label className="field"><span>Starts on</span><input name="starts_on" type="date" defaultValue={c?.starts_on ?? ""} /></label>

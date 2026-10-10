@@ -18,13 +18,13 @@ export function YouTubeAdder({ categories = [], fixedCategoryId }: { categories?
           style={{ minHeight: 110 }}
           placeholder={"Paste one link per line, for example\nhttps://youtu.be/..."}
         />
-        <small>Use each video&apos;s Share link. Titles are added automatically, and you can rename them later. YouTube videos are always free to watch.</small>
+        <small>Use each video&apos;s Share link. Titles are added automatically, and you can rename them later. YouTube videos are open to everyone who signs up.</small>
       </label>
       {fixedCategoryId ? (
         <input type="hidden" name="category" value={fixedCategoryId} />
       ) : categories.length ? (
         <div className="field">
-          <span>Topics they help with</span>
+          <span>Programs they belong to</span>
           <CategoryPicker categories={categories} />
         </div>
       ) : null}

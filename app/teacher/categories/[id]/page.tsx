@@ -10,7 +10,7 @@ import { CategoryForm } from "../CategoryForm";
 import { DeleteTopic } from "../DeleteTopic";
 
 type V = { id: string; title: string; access: string; youtube_id: string | null };
-const LABEL: Record<string, string> = { free: "Free", members: "Members", course: "Course", assigned: "Assigned only" };
+const LABEL: Record<string, string> = { free: "Open to all", members: "Members", course: "Course", assigned: "Assigned only" };
 
 export default async function TopicPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ new?: string }> }) {
   const { id } = await params;
@@ -35,21 +35,21 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   return (
     <>
-      <Link href="/teacher/categories">All topics</Link>
+      <Link href="/teacher/categories">All programs</Link>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
         <div>
           <p style={{ color: "var(--muted)" }}>{cat.grp}</p>
           <h1 style={{ fontSize: 38 }}>{cat.title}</h1>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
-          <a href={`/practice/${cat.slug}`} target="_blank" rel="noopener noreferrer">View on website</a>
+          <a href={`/programs/${cat.slug}`} target="_blank" rel="noopener noreferrer">View on website</a>
           <DeleteTopic id={cat.id} title={cat.title} />
         </div>
       </div>
-      {isNew ? <p className="success" role="status">Topic created. Now add its videos below.</p> : null}
+      {isNew ? <p className="success" role="status">Program created. Now add its videos below.</p> : null}
 
       <section className="card" style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <h2 style={{ fontSize: 24, marginBottom: 8 }}>Videos in this topic ({videos.length})</h2>
+        <h2 style={{ fontSize: 24, marginBottom: 8 }}>Videos in this program ({videos.length})</h2>
         {videos.length === 0 ? <p style={{ color: "var(--muted)" }}>No videos yet. Add some below.</p> : null}
         {videos.map((v) => (
           <div key={v.id} className="list-item" style={{ borderTop: "1px solid var(--hair)" }}>
@@ -61,7 +61,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 500 }}>{v.title}</p>
-              <p style={{ color: "var(--muted)", fontSize: 14 }}>{v.youtube_id ? "Free · YouTube" : LABEL[v.access] ?? v.access}</p>
+              <p style={{ color: "var(--muted)", fontSize: 14 }}>{v.youtube_id ? "YouTube, open to all" : LABEL[v.access] ?? v.access}</p>
             </div>
             <form action={removeVideoFromCategory.bind(null, cat.id, v.id)}>
               <button className="btn btn-outline btn-small" type="submit">Remove</button>
@@ -72,13 +72,13 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
       <div className="row">
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <h2 style={{ fontSize: 22 }}>Add free videos from YouTube</h2>
+          <h2 style={{ fontSize: 22 }}>Add videos from YouTube</h2>
           <YouTubeAdder fixedCategoryId={cat.id} />
         </section>
         <section className="card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <h2 style={{ fontSize: 22 }}>Add a video already on the site</h2>
           {others.length === 0 ? (
-            <p style={{ color: "var(--muted)" }}>Every video is already in this topic.</p>
+            <p style={{ color: "var(--muted)" }}>Every video is already in this program.</p>
           ) : (
             <form action={addVideoToCategory.bind(null, cat.id)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <label className="field">
@@ -89,21 +89,21 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   ))}
                 </select>
               </label>
-              <button className="btn btn-small" type="submit" style={{ alignSelf: "flex-start" }}>Add to topic</button>
+              <button className="btn btn-small" type="submit" style={{ alignSelf: "flex-start" }}>Add to program</button>
             </form>
           )}
         </section>
       </div>
 
       <details className="card" style={{ padding: "18px 22px" }}>
-        <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 18, minHeight: 32 }}>Upload a paid video to this topic</summary>
+        <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 18, minHeight: 32 }}>Upload a members video to this program</summary>
         <div style={{ marginTop: 16 }}>
           <Uploader courses={courses ?? []} categories={allCats ?? []} preselected={[cat.id]} />
         </div>
       </details>
 
       <section className="card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <h2 style={{ fontSize: 22 }}>Topic details and guide</h2>
+        <h2 style={{ fontSize: 22 }}>Program page details</h2>
         <CategoryForm category={cat} groups={groups} />
       </section>
     </>

@@ -28,55 +28,23 @@ export const INSTAGRAM_REELS = [
 ];
 
 export const HERO_TEXT =
-  "Holistic wellness for mind, body and soul. I share yoga, breathwork, meditation and healing practices to help you move with ease, find calm, and come home to yourself.";
+  "Yoga, breath, meditation and healing, practised with care. Come as you are, and let's find your way back to ease, calm and joy, one breath at a time.";
+
+// A short line in my voice, shown beside my photo.
+export const QUOTE = "Yoga, for me, is a way of coming home: to the breath, to the body, and to the quiet place within.";
 
 export const ABOUT = {
   photo: "/pose-fort.jpg",
   heading: "Hi, I'm Deepshikha",
   paragraphs: [
-    "For more than a decade, I have been teaching yoga, meditation and breathwork to students, working professionals, corporate teams and administrators.",
+    "For more than a decade, I have taught yoga, meditation and breathwork to students, working professionals, corporate teams and administrators.",
     "My approach is holistic. Hatha yoga, pranayama, meditation, Marma therapy and life coaching come together to care for the body, settle the mind and nourish the spirit.",
     "I see every person individually. Your goals, your body, and anything you share about pain or health shape how we practise together.",
   ],
 };
 
-// "Work with me": personal and group offerings. No prices here; every card leads to a conversation.
-export const WORK_WITH_ME = [
-  {
-    title: "Live group classes",
-    body: "Practise with me live, in small online groups. A steady rhythm that makes the habit easy to keep.",
-    cta: "Ask about timings",
-    interest: "Live group classes",
-  },
-  {
-    title: "1:1 guidance",
-    body: "Personal yoga therapy, Marma care or life coaching, shaped around your body, your goals and your pace.",
-    cta: "Start a conversation",
-    interest: "1:1 guidance",
-  },
-  {
-    title: "Soulful conversations",
-    body: "Unhurried conversations on stress, purpose, relationships and finding balance, with practices to take home.",
-    cta: "Reach out",
-    interest: "Soulful conversations",
-  },
-  {
-    title: "For organisations",
-    body: "I have guided corporate teams, schools and groups. Sessions on stress, posture, breath and focus, designed for your people.",
-    cta: "Plan a session",
-    interest: "Sessions for an organisation",
-  },
-];
-
-// The choices in the enquiry form. Keep in sync with WORK_WITH_ME interests.
-export const ENQUIRY_INTERESTS = [
-  "Live group classes",
-  "1:1 guidance",
-  "Soulful conversations",
-  "Sessions for an organisation",
-  "Something else",
-];
+// Words in the band under the opening section.
+export const PRACTICE_WORDS = ["Hatha Yoga", "Pranayama", "Meditation", "Yoga Nidra", "Marma", "Yoga Therapy", "Live online"];
 
 // YouTube videos shown on the home page. Add video ids (the part after "v=" in the link).
-// While this list is empty, the section shows a single card that opens the YouTube channel.
-export const FREE_VIDEOS: { id: string; title: string }[] = [];
+export const YOUTUBE_VIDEOS: { id: string; title: string }[] = [];

@@ -18,15 +18,15 @@ export default async function TeacherCategories({ searchParams }: { searchParams
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <h1 style={{ fontSize: 38 }}>Practice topics</h1>
+        <h1 style={{ fontSize: 38 }}>Programs</h1>
         <p style={{ color: "var(--soft)", maxWidth: 720 }}>
-          Open a topic to add or remove its videos and edit its guide. Topics appear on the website under Practice by need.
+          Open a program to add or remove its videos and edit its page. Programs appear on the website in the Programs menu and on the home page.
         </p>
       </div>
-      {deleted ? <p className="success" role="status">Topic deleted. Its videos are still in your video library.</p> : null}
+      {deleted ? <p className="success" role="status">Program deleted. Its videos are still in your video library.</p> : null}
 
       <details className="card" style={{ padding: "18px 22px" }}>
-        <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 18, minHeight: 32 }}>Add a new topic</summary>
+        <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 18, minHeight: 32 }}>Add a program</summary>
         <div style={{ marginTop: 16 }}>
           <CategoryForm groups={groups.map((g) => g.name)} />
         </div>

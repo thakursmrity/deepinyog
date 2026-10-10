@@ -38,7 +38,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
       <PublicHeader />
       <main className="container" style={{ paddingTop: 32, paddingBottom: 88, display: "flex", flexWrap: "wrap", gap: 40, alignItems: "flex-start" }}>
         <article style={{ flex: "2 1 480px", minWidth: 0, display: "flex", flexDirection: "column", gap: 18 }}>
-          <Link href="/courses">All courses</Link>
+          <Link href="/courses">All live sessions</Link>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             <span className="pill" style={{ background: "var(--blush-soft)", color: "var(--ink)" }}>{KIND_LABEL[c.kind] ?? "Course"}</span>
             <StatusPill status={c.status} />

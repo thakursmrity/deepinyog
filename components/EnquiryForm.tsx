@@ -2,9 +2,8 @@
 
 import { useActionState } from "react";
 import { submitEnquiry, type EnquiryState } from "@/app/enquiry";
-import { ENQUIRY_INTERESTS } from "@/lib/content";
 
-export function EnquiryForm({ defaultInterest }: { defaultInterest?: string }) {
+export function EnquiryForm({ options, defaultInterest }: { options: string[]; defaultInterest?: string }) {
   const [state, action, pending] = useActionState<EnquiryState, FormData>(submitEnquiry, {});
 
   if (state.ok) {
@@ -23,9 +22,9 @@ export function EnquiryForm({ defaultInterest }: { defaultInterest?: string }) {
         <label className="field"><span>Phone or email</span><input name="contact" required autoComplete="email" /></label>
       </div>
       <label className="field">
-        <span>Interested in</span>
-        <select name="interest" defaultValue={defaultInterest && ENQUIRY_INTERESTS.includes(defaultInterest) ? defaultInterest : ENQUIRY_INTERESTS[0]}>
-          {ENQUIRY_INTERESTS.map((o) => (
+        <span>I&apos;m interested in</span>
+        <select name="interest" defaultValue={defaultInterest && options.includes(defaultInterest) ? defaultInterest : options[0]}>
+          {options.map((o) => (
             <option key={o}>{o}</option>
           ))}
         </select>

@@ -53,7 +53,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
 
       <section className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         <h2 style={{ fontSize: 24, marginBottom: 8 }}>Open to you</h2>
-        {free.length === 0 ? <p style={{ color: "var(--muted)" }}>{current ? "Nothing open in this topic yet." : "New practices are coming soon."}</p> : null}
+        {free.length === 0 ? <p style={{ color: "var(--muted)" }}>{current ? "Nothing open in this program yet." : "New practices are coming soon."}</p> : null}
         {free.map((v) => (
           <VideoRow key={v.id} youtubeId={v.youtube_id} id={v.id} title={v.title} minutes={v.duration_minutes} unlocked lockedHref="/app/membership" lockedLabel="" done={done.has(v.id)} />
         ))}

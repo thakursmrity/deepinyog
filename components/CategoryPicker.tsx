@@ -12,7 +12,7 @@ export function CategoryPicker({ categories, selected = [], compact = false }: {
   return (
     <details style={{ border: "1px solid var(--line)", borderRadius: 12, padding: compact ? "8px 12px" : "12px 14px", background: "#fff" }}>
       <summary style={{ cursor: "pointer", fontWeight: 500, minHeight: 28 }}>
-        Topics {chosen.size ? `(${chosen.size} chosen)` : "(none yet)"}
+        Programs {chosen.size ? `(${chosen.size} chosen)` : "(none yet)"}
       </summary>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14, marginTop: 12 }}>
         {[...groups.entries()].map(([grp, items]) => (

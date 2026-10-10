@@ -33,7 +33,7 @@ export default async function TeacherCourses() {
                 <Link href={`/teacher/courses/${c.id}`}>{c.title}</Link> <StatusPill status={c.status} />
               </p>
               <p style={{ color: "var(--muted)", fontSize: 14 }}>
-                {c.price_paise > 0 ? inr(coursePrice(c)) : "Free"} · {waiting.get(c.id) ?? 0} on waitlist · {enrolled.get(c.id) ?? 0} enrolled
+                {c.price_paise > 0 ? inr(coursePrice(c)) : "No fee"} · {waiting.get(c.id) ?? 0} on waitlist · {enrolled.get(c.id) ?? 0} enrolled
                 {c.starts_on ? ` · starts ${formatDate(c.starts_on)}` : ""}
               </p>
             </div>

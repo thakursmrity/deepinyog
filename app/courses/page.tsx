@@ -2,7 +2,7 @@ import { COURSE_FIELDS, CourseCard, type CourseRow } from "@/components/CourseCa
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
 import { createClient } from "@/lib/supabase/server";
 
-export const metadata = { title: "Programs and courses | Deepinyog" };
+export const metadata = { title: "Live sessions | Deepinyog" };
 export const dynamic = "force-dynamic";
 
 export default async function Courses() {
@@ -26,12 +26,11 @@ export default async function Courses() {
       <PublicHeader />
       <main className="container" style={{ paddingTop: 40, paddingBottom: 88, display: "flex", flexDirection: "column", gap: 48 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 680 }}>
-          <p className="eyebrow">Programs and courses</p>
-          <h1 style={{ fontSize: "clamp(36px, 5vw, 52px)", lineHeight: 1.1 }}>Live programs, workshops and courses</h1>
+                    <h1 style={{ fontSize: "clamp(36px, 5vw, 52px)", lineHeight: 1.1 }}>Live sessions</h1>
           <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.6 }}>Join me live in programs and workshops, or learn at your own pace with recorded courses. For upcoming ones, join the waitlist and I will let you know as soon as they open.</p>
         </div>
 
-        {courses.length === 0 ? <p style={{ color: "var(--muted)" }}>New programs are on the way. Sign up to hear about them first.</p> : null}
+        {courses.length === 0 ? <p style={{ color: "var(--muted)" }}>New sessions are on the way. Sign up to hear about them first.</p> : null}
 
         {open.length > 0 ? (
           <section style={{ display: "flex", flexDirection: "column", gap: 20 }}>

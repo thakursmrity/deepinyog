@@ -448,8 +448,8 @@ select id from public.profiles where role = 'student'
 on conflict (student_id) do nothing;
 
 -- =====================================================================
--- Version 3: practice categories with guidance
--- Groups (Start here, Pain relief, Health conditions...) hold categories.
+-- Version 3: programs (stored in the categories table)
+-- Each program has a tagline, what it helps with, and guidance.
 -- A video can sit in several categories. All text is editable by the teacher.
 -- =====================================================================
 
@@ -462,6 +462,8 @@ create table if not exists public.categories (
   summary text not null default '',
   guidance text not null default '',
   caution text not null default '',
+  tagline text not null default '',
+  highlights text not null default '',
   sort int not null default 0,
   active boolean not null default true,
   created_at timestamptz not null default now()
@@ -473,53 +475,56 @@ create table if not exists public.video_categories (
   primary key (video_id, category_id)
 );
 
-insert into public.categories (grp, slug, title, summary, guidance, caution, sort)
+alter table public.categories add column if not exists tagline text not null default '';
+alter table public.categories add column if not exists highlights text not null default '';
+
+insert into public.categories (grp, slug, title, tagline, summary, highlights, guidance, caution, sort)
 select * from (values
-  -- Body: yoga and movement
-  ('Body', 'yoga-for-beginners', 'Yoga for beginners', 'Gentle first steps on the mat.', 'Start with short Hatha sessions two or three times a week. Move slowly, keep the breath easy, and stop well before any strain.', '', 10),
-  ('Body', 'daily-flow', 'Daily flow', 'Short routines to keep the habit alive.', 'A little every day does more than a lot once a week. Pick one flow and repeat it until it feels like yours.', '', 11),
-  ('Body', 'back-neck-care', 'Back and neck care', 'Ease the tension of long sitting and screens.', 'Slow, supported movements for the spine, neck and shoulders, with gentle core support.', 'Avoid deep forward bends and sudden twists if pain is sharp. With a slipped disc or recent injury, check with your doctor first.', 12),
-  ('Body', 'joint-mobility', 'Joint mobility', 'Keep every joint moving freely.', 'Easy circles and range-of-motion work for wrists, shoulders, hips, knees and ankles. Ideal as a morning warm-up.', 'Move within a pain-free range.', 13),
-  ('Body', 'strength-flexibility', 'Strength and flexibility', 'Steady strength with an open, supple body.', 'Balance held poses with gentle stretches, and focus on alignment before adding longer holds.', '', 14),
-  ('Body', 'desk-reset', 'Desk and posture reset', 'Quick resets for working days.', 'Five to ten minutes at your desk or chair to open the chest, release the neck and wake up the back.', '', 15),
-
-  -- Breath: pranayama
-  ('Breath', 'breathwork-basics', 'Breathwork basics', 'Learn to breathe fully and easily.', 'Sit comfortably and notice the natural breath first, then lengthen it gently. Never strain or force the breath.', 'Stop if you feel dizzy.', 20),
-  ('Breath', 'energising-breath', 'Energising breath', 'Wake up body and mind.', 'Dynamic breathing practices are best in the morning on an empty stomach.', 'Avoid fast breathing practices in pregnancy, with high blood pressure or heart conditions unless your doctor agrees.', 21),
-  ('Breath', 'calming-breath', 'Calming breath', 'Settle the nervous system.', 'Longer exhales and alternate nostril breathing help the body shift into rest.', '', 22),
-
-  -- Mind: meditation and mindfulness
-  ('Mind', 'guided-meditation', 'Guided meditation', 'Simple, guided time for a quieter mind.', 'Start with five to ten minutes. Sit or lie comfortably and let the guidance do the work.', '', 30),
-  ('Mind', 'stress-anxiety', 'Stress and anxiety relief', 'Practices to settle a busy mind.', 'Breath, gentle movement and short meditations calm the body first, and the mind follows.', 'If anxiety feels overwhelming, please also reach out to a doctor or counsellor.', 31),
-  ('Mind', 'sleep-yoga-nidra', 'Sleep and yoga nidra', 'Deep rest and better sleep.', 'Yoga nidra is practised lying down. Use it in the evening or whenever you feel drained.', '', 32),
-  ('Mind', 'focus-clarity', 'Focus and clarity', 'A clear, steady mind for work and study.', 'Short concentration practices and breath awareness, ideally at the same time each day.', '', 33),
-  ('Mind', 'mindful-living', 'Mindful living', 'Bring awareness into everyday moments.', 'Small practices for eating, walking and working with more presence.', '', 34),
-
-  -- Soul: inner peace and growth
-  ('Soul', 'lemurian-yoga', 'Sri Sri Lemurian Yoga', 'Return to effortless: flowing movement and deep meditation.', 'Gentle, flowing movements that boost energy, ease the joints and lead into deep meditation.', '', 40),
-  ('Soul', 'chanting-mantra', 'Chanting and mantra', 'Sound and vibration for a peaceful mind.', 'Chant slowly and let the vibration settle you. Listening quietly is a practice too.', '', 41),
-  ('Soul', 'gratitude-self-love', 'Gratitude and self-love', 'Gentle practices to feel at home in yourself.', 'Short reflections, journaling prompts and heart-opening practice.', '', 42),
-  ('Soul', 'inner-wisdom', 'Wisdom and reflection', 'Talks and reflections for everyday life.', 'Listen with an open mind and take one idea into your day.', '', 43),
-
-  -- Healing: yoga therapy and Marma
-  ('Healing', 'marma-therapy', 'Marma therapy', 'Ancient energy-point care for body and mind.', 'Marma works with vital points to release tension and support the flow of energy. Learn simple self-care points here.', 'For specific health concerns, book a personal session rather than self-treating.', 50),
-  ('Healing', 'thyroid', 'Thyroid', 'Supportive practice alongside your treatment.', 'Calm, regular practice with gentle neck movements and soothing breathwork.', 'Yoga supports wellbeing but does not replace medical treatment. Keep taking prescribed medicines.', 51),
-  ('Healing', 'pcos-hormones', 'PCOS and hormonal balance', 'Steady movement and stress care for hormonal health.', 'Regular moderate movement, hip openers and calming breath, with good sleep and routine.', 'Work with your doctor on diagnosis and treatment.', 52),
-  ('Healing', 'diabetes-support', 'Diabetes support', 'Regular movement for a healthy routine.', 'A consistent daily practice alongside diet and medical advice.', 'Keep a snack nearby and check your sugar levels as your doctor advises.', 53),
-  ('Healing', 'blood-pressure', 'Blood pressure', 'Calming, gentle practice.', 'Slow movement, long exhales and relaxation.', 'Avoid holding the breath and strong inversions with high blood pressure. Follow your doctor''s advice.', 54),
-  ('Healing', 'digestion-weight', 'Digestion and healthy weight', 'Comfortable digestion and a balanced metabolism.', 'Gentle twists and flows, a few hours after meals, with steady consistency.', '', 55),
-
-  -- Women and family
-  ('Women and family', 'periods', 'Periods and PMS', 'Comfort and ease through the cycle.', 'Restful, supported poses and gentle breathing on heavier days.', 'Skip strong inversions and intense core work if they feel uncomfortable.', 60),
-  ('Women and family', 'pregnancy', 'Pregnancy', 'Gentle prenatal practice.', 'Supported movement and breath for each trimester.', 'Only practise with your doctor''s approval. Avoid lying on the back for long later in pregnancy, deep twists and strong core work.', 61),
-  ('Women and family', 'postnatal', 'After childbirth', 'Rebuild strength gently after birth.', 'Begin with breath and gentle pelvic floor work, adding more over time.', 'Wait for your doctor''s go-ahead, especially after a C-section.', 62),
-  ('Women and family', 'kids-mindfulness', 'Kids yoga and mindfulness', 'Playful practice for calm, focused children.', 'Short, playful sessions with stories, animal poses and simple breathing games.', 'Children should practise with an adult nearby.', 63),
-
-  -- Everyday wellness
-  ('Everyday wellness', 'morning-rituals', 'Morning rituals', 'Start the day grounded and energised.', 'A simple sequence of movement, breath and intention you can do in fifteen minutes.', '', 70),
-  ('Everyday wellness', 'mindful-eating', 'Mindful eating', 'A kinder, calmer relationship with food.', 'Slow down, notice hunger and fullness, and enjoy each meal with attention.', '', 71),
-  ('Everyday wellness', 'wellness-at-work', 'Wellness at work', 'For busy professionals and teams.', 'Short practices for focus, posture and stress you can fit between meetings.', '', 72)
-) as v(grp, slug, title, summary, guidance, caution, sort)
+  ('Programs', 'hatha-yoga', 'Hatha Yoga', 'Strength, ease and balance', 'Classical postures, held with awareness and paired with the breath. A steady practice for beginners and for anyone coming back to the mat.', 'Starting out with yoga
+Flexibility and mobility
+Strength and stamina
+Posture and alignment
+A daily routine', 'We begin slowly, with joint warm-ups and simple postures, and build gradually. Every posture has easier and deeper versions, so you practise at the level that suits your body today.', '', 10),
+  ('Programs', 'yoga-therapy', 'Yoga Therapy', 'Healing, one posture at a time', 'Gentle, therapeutic practice shaped around a specific concern, alongside the care you already receive.', 'Back and neck pain
+Knees and joints
+Thyroid
+PCOS and hormonal balance
+Diabetes support
+Blood pressure', 'Therapy sessions start with understanding you: your history, your body and what you need. The practice is then built around that, with postures, breath and relaxation chosen for you.', 'Yoga supports healing but does not replace medical treatment. Please keep following your doctor''s advice and share any diagnosis or injury with me before we begin.', 20),
+  ('Programs', 'marma-therapy', 'Marma Therapy', 'Release through the body''s vital points', 'An ancient practice that works with vital energy points to release tension, ease pain and restore the flow of energy.', 'Stress and tension release
+Pain relief
+Better sleep
+Energy and vitality
+Simple self-care points', 'Sessions combine gentle work on marma points with breath and relaxation. I also share simple points you can use for yourself at home.', 'For a specific health concern, please book a personal session rather than self-treating.', 30),
+  ('Programs', 'pranayama', 'Pranayama and Breathwork', 'The breath is the bridge', 'Breathing practices to energise the body, calm the nervous system and steady the mind.', 'Energy in the morning
+Calm in stressful moments
+Better lung capacity
+Focus and clarity', 'We sit comfortably and first observe the natural breath, then slowly lengthen and guide it. The breath is never strained or forced.', 'Avoid fast breathing practices in pregnancy or with high blood pressure or heart conditions unless your doctor agrees. Stop if you feel dizzy.', 40),
+  ('Programs', 'meditation', 'Meditation and Yoga Nidra', 'Stillness, sleep and clarity', 'Guided meditation and yoga nidra, deep relaxation practised lying down, for a quieter mind and deeper rest.', 'Stress and anxiety
+Deeper sleep
+Focus and clarity
+Emotional balance', 'Start with ten minutes, sitting or lying down, and let the guidance carry you. Regular, short practice works better than occasional long sessions.', 'If anxiety feels overwhelming, please also reach out to a doctor or counsellor.', 50),
+  ('Programs', 'lemurian-yoga', 'Sri Sri Lemurian Yoga', 'Return to effortless', 'Soft, flowing movements that boost energy, ease the joints, calm the busy mind and lead naturally into deep meditation.', 'Energy levels
+Joint mobility
+A calm, busy mind
+Deep meditation', 'There is nothing to achieve here. We move gently and continuously, letting the body find its own rhythm, and then rest in stillness.', '', 60),
+  ('Programs', 'womens-wellness', 'Women''s Wellness', 'For every season of womanhood', 'Gentle, supportive practice through periods, pregnancy, life after childbirth and hormonal changes.', 'Periods and PMS
+Pregnancy
+After childbirth
+Hormonal balance', 'Practice changes with each stage: restful and supported on heavier days, gentle and steady in pregnancy, rebuilding slowly after birth.', 'During pregnancy and after childbirth, please practise only with your doctor''s approval.', 70),
+  ('Programs', 'kids-yoga', 'Kids Yoga and Mindfulness', 'Calm, focused, joyful children', 'Playful sessions with stories, animal poses and breathing games that help children settle, focus and feel good in their bodies.', 'Focus and attention
+Calm and emotional balance
+Posture and flexibility
+Confidence', 'Sessions are short, playful and full of movement, with a quiet moment of rest at the end.', 'Children should practise with an adult nearby.', 80),
+  ('Programs', 'workplace-wellness', 'Workplace Wellness', 'Calmer teams, clearer minds', 'Yoga, breathwork and stress care for teams, designed around long hours, screens and busy schedules.', 'Desk and posture resets
+Stress management
+Focus and energy
+Team wellbeing sessions', 'I have guided corporate teams and administrators for over a decade. Sessions can be one-off workshops or a regular series, online or in person.', '', 90),
+  ('Programs', 'life-coaching', 'Life Coaching and Soulful Conversations', 'Find your way back to yourself', 'Unhurried one-to-one conversations on stress, purpose, relationships and balance, with practices to take into everyday life.', 'Clarity and direction
+Habits that last
+Emotional balance
+Purpose and self-belief', 'We talk, we listen, and we find small, steady steps forward, supported by breath and reflection practices you can use every day.', '', 100)
+) as v(grp, slug, title, tagline, summary, highlights, guidance, caution, sort)
 where not exists (select 1 from public.categories);
 
 alter table public.categories enable row level security;
@@ -578,3 +583,20 @@ end;
 $$;
 revoke all on function public.enroll_free(uuid) from public;
 grant execute on function public.enroll_free(uuid) to authenticated;
+
+-- =====================================================================
+-- Version 6: starting live program
+-- =====================================================================
+insert into public.courses (slug, title, kind, status, price_paise, summary, description, schedule, hosts, register_url, starts_on)
+select 'backyourback', 'BackYourBack', 'program', 'open', 0,
+  'Reclaim your comfort and mobility. Simple everyday practices for neck and lower-back tension.',
+  'Do long sitting hours, screen time, neck stiffness, shoulder tension or lower-back discomfort affect your everyday comfort?
+
+Join BackYourBack, a 3-day online wellness program with simple, practical practices to support better posture, mobility, flexibility, strength and ease of movement.
+
+Please feel free to share this with family, friends or colleagues who may benefit.',
+  '12 to 14 October 2026, 7:00 to 8:30 AM IST, online from home',
+  'Dr. Rohit Sabharwal',
+  'https://forms.gle/uznHF2TzauF2APCQ9',
+  date '2026-10-12'
+where not exists (select 1 from public.courses where slug = 'backyourback');

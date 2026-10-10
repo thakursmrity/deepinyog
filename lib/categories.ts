@@ -3,6 +3,8 @@ export type Category = {
   slug: string;
   grp: string;
   title: string;
+  tagline: string;
+  highlights: string;
   summary: string;
   guidance: string;
   caution: string;
@@ -10,7 +12,7 @@ export type Category = {
   active: boolean;
 };
 
-export const CATEGORY_FIELDS = "id, slug, grp, title, summary, guidance, caution, sort, active";
+export const CATEGORY_FIELDS = "id, slug, grp, title, tagline, highlights, summary, guidance, caution, sort, active";
 
 // Groups in the order of their first category.
 export function groupCategories<T extends { grp: string; sort: number }>(cats: T[]) {

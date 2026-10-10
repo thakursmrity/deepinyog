@@ -38,7 +38,7 @@ export async function startCheckout(itemType: "plan" | "course", itemId: string)
     name = course.title;
   }
 
-  if (amount < 100) return { ok: false, error: "This item is free; no payment needed." };
+  if (amount < 100) return { ok: false, error: "No payment is needed for this one." };
 
   try {
     const order = await createOrder({

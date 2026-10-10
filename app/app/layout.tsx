@@ -13,8 +13,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
         { href: "/app", label: "Today" },
         { href: "/app/library", label: "Video library" },
         { href: "/app/courses", label: "My courses" },
-        { href: "/practice", label: "All practices" },
-        { href: "/courses", label: "Programs" },
+        { href: "/programs", label: "All programs" },
+        { href: "/courses", label: "Live sessions" },
         { href: "/app/membership", label: "Membership" },
         { href: "/app/account", label: "My account" },
       ]}

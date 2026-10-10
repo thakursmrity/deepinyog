@@ -28,7 +28,7 @@ export function SignInForm({ next }: { next: string }) {
       <label className="field"><span>Email</span><input name="email" type="email" autoComplete="email" required /></label>
       <label className="field"><span>Password</span><input name="password" type="password" autoComplete="current-password" required /></label>
       {state.error ? <p className="error" role="alert">{state.error}</p> : null}
-      <button className="btn" type="submit" disabled={pending}>{pending ? "Signing in" : "Sign in"}</button>
+      <button className="btn" type="submit" disabled={pending}>{pending ? "Logging in" : "Log in"}</button>
     </form>
   );
 }
@@ -47,7 +47,7 @@ export function SignUpForm({ next }: { next: string }) {
         <small>At least 8 characters.</small>
       </label>
       {state.error ? <p className="error" role="alert">{state.error}</p> : null}
-      <button className="btn" type="submit" disabled={pending}>{pending ? "Creating your account" : "Sign up"}</button>
+      <button className="btn btn-sun" type="submit" disabled={pending}>{pending ? "Creating your account" : "Sign up"}</button>
     </form>
   );
 }
