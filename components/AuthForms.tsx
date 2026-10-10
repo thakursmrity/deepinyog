@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { PasswordInput } from "@/components/PasswordInput";
 import { signIn, signInWithGoogle, signUp, type AuthState } from "@/app/login/actions";
 
 export function GoogleButton({ next }: { next: string }) {
@@ -26,7 +27,7 @@ export function SignInForm({ next }: { next: string }) {
     <form action={action} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <input type="hidden" name="next" value={next} />
       <label className="field"><span>Email</span><input name="email" type="email" autoComplete="email" required /></label>
-      <label className="field"><span>Password</span><input name="password" type="password" autoComplete="current-password" required /></label>
+      <label className="field"><span>Password</span><PasswordInput name="password" autoComplete="current-password" required /></label>
       {state.error ? <p className="error" role="alert">{state.error}</p> : null}
       <button className="btn" type="submit" disabled={pending}>{pending ? "Logging in" : "Log in"}</button>
     </form>
@@ -43,7 +44,7 @@ export function SignUpForm({ next }: { next: string }) {
       <label className="field"><span>Email</span><input name="email" type="email" autoComplete="email" required /></label>
       <label className="field">
         <span>Password</span>
-        <input name="password" type="password" autoComplete="new-password" required minLength={8} />
+        <PasswordInput name="password" autoComplete="new-password" required minLength={8} />
         <small>At least 8 characters.</small>
       </label>
       {state.error ? <p className="error" role="alert">{state.error}</p> : null}

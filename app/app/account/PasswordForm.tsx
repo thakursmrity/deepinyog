@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PasswordInput } from "@/components/PasswordInput";
 import { createClient } from "@/lib/supabase/client";
 
 export function PasswordForm() {
@@ -30,11 +31,11 @@ export function PasswordForm() {
     <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420 }}>
       <label className="field">
         <span>New password</span>
-        <input name="password" type="password" autoComplete="new-password" required minLength={8} />
+        <PasswordInput name="password" autoComplete="new-password" required minLength={8} />
       </label>
       <label className="field">
         <span>Repeat new password</span>
-        <input name="confirm" type="password" autoComplete="new-password" required minLength={8} />
+        <PasswordInput name="confirm" autoComplete="new-password" required minLength={8} />
       </label>
       {message ? (
         <p className={message.ok ? "success" : "error"} role="status">
