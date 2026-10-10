@@ -51,7 +51,7 @@ export default async function Connect({ searchParams }: { searchParams: Promise<
             <div style={{ flex: "1.2 1 400px", minWidth: 0, display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={PHOTOS.hero} alt="" style={{ width: 64, height: 64, borderRadius: 999, objectFit: "cover", border: "3px solid #fff" }} />
+                <img src={PHOTOS.profile} alt={TEACHER.name} style={{ width: 76, height: 76, borderRadius: 999, objectFit: "cover", border: "3px solid #fff", boxShadow: "0 6px 18px rgba(90, 63, 71, 0.15)", flexShrink: 0 }} />
                 <p style={{ margin: 0, color: "var(--soft)" }}>Your message comes straight to me, {TEACHER.name}.</p>
               </div>
               <EnquiryForm key={interest ?? "default"} options={OPTIONS} defaultInterest={interest} />

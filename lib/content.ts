@@ -19,6 +19,8 @@ export const PHOTOS = {
   hero: "/meditation-river.jpg",
   pose: "/pose-fort.jpg",
   nature: "/forest-walk.jpg",
+  // Round profile photo, used beside the message form.
+  profile: "/profile.jpg",
 };
 
 // Instagram reels shown on the home page. Add or remove links here.
