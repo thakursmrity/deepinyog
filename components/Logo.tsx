@@ -1,4 +1,5 @@
 // The Deepinyog logo: a lotus opening in front of a rising sun, above calm water.
+// The name sits beside the mark; no tagline, so the logo stays clean.
 
 export function LotusMark({ size = 40, water = true }: { size?: number; water?: boolean }) {
   return (
@@ -30,13 +31,8 @@ export function LogoMark({ size = 32 }: { size?: number; color?: string }) {
 export function Logo({ textColor = "var(--ink)", tagline = false }: { color?: string; textColor?: string; tagline?: boolean }) {
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 10, color: textColor, lineHeight: 1 }}>
-      <LotusMark size={tagline ? 48 : 40} />
-      <span style={{ display: "inline-flex", flexDirection: "column", gap: 5 }}>
-        <span style={{ fontFamily: "var(--font-display), serif", fontSize: 26, letterSpacing: 0.4 }}>deepinyog</span>
-        {tagline ? (
-          <span style={{ fontSize: 10, letterSpacing: 1.6, textTransform: "uppercase", color: "var(--saffron-ink)" }}>Dive deeper to rise higher</span>
-        ) : null}
-      </span>
+      <LotusMark size={tagline ? 46 : 42} />
+      <span style={{ fontFamily: "var(--font-display), serif", fontSize: 26, letterSpacing: 0.4 }}>deepinyog</span>
     </span>
   );
 }

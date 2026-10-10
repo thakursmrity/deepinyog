@@ -240,9 +240,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 /* ---------- Home: the sunrise ---------- */
 .hero { position: relative; overflow: hidden; }
 .hero-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 40px; align-items: center; padding-top: 32px; padding-bottom: 96px; }
-.hero-title { font-size: clamp(46px, 7vw, 104px); line-height: 1; letter-spacing: -0.5px; margin: 0; }
-.hero-title span { display: block; white-space: nowrap; }
-.hero-title .rise { padding-left: 0.7em; }
+.hero-title { font-size: clamp(44px, 6vw, 84px); line-height: 1.04; letter-spacing: -0.5px; margin: 0; text-align: left; }
+.hero-title span { display: block; }
+.hero-title .rise { padding-left: 0; color: var(--saffron-ink); }
 .hero-sun {
   position: absolute; z-index: 0; pointer-events: none; border-radius: 999px;
   width: min(900px, 130vw); aspect-ratio: 1; left: 34%; top: 18%;
@@ -266,9 +266,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 @media (max-width: 880px) {
   .hero-inner { grid-template-columns: 1fr; padding-bottom: 64px; }
   .hero-arch { width: min(100%, 360px); }
-  .hero-title .rise { padding-left: 0.5em; }
   .hero-sun { left: 50%; top: 4%; }
-  .hero-title span { white-space: normal; }
 }
 
 .practice-strip { border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); background: #fff; }

@@ -64,7 +64,7 @@ export default async function Home() {
 
         {/* What yoga is */}
         <section id="yoga" className="container" style={{ paddingTop: 96, paddingBottom: 88, display: "flex", flexDirection: "column", gap: 40, scrollMarginTop: 16 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "24px 64px", alignItems: "flex-end" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "24px 64px", alignItems: "center" }}>
             <div style={{ flex: "1 1 420px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14 }}>
               <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", lineHeight: 1.05 }}>What is yoga, really?</h2>
               <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.7, margin: 0 }}>
@@ -92,7 +92,7 @@ export default async function Home() {
         {live.length > 0 ? (
           <section style={{ background: "var(--saffron-mist)" }}>
             <div className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "flex", flexDirection: "column", gap: 28 }}>
-              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
                 <h2 style={{ fontSize: "clamp(34px, 4.5vw, 50px)", lineHeight: 1.05 }}>Coming up next</h2>
                 <Link href="/programs#upcoming" style={{ fontWeight: 500 }}>All programs</Link>
               </div>

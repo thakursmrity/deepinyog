@@ -2,7 +2,7 @@
 
 The website and learning platform for Deepinyog.
 
-- **Website**: separate pages for Home, About me, Programs and Connect, plus Log in. Home explains yoga and the practices I teach and points to the other pages. Programs starts with upcoming programs, then what practice works on, paths by need and my videos. Connect takes questions and one-on-one conversation requests. New students register on the login page with name, email and password (or Google); prices appear only on programs and courses, and membership options only after registering.
+- **Website**: the menu is About me, Programs and Log in; the logo leads home. Connect is its own page, reached from buttons and the footer. Home explains yoga and the practices I teach and points to the other pages. Programs starts with upcoming programs, then what practice works on, paths by need and my videos. Connect takes questions and one-on-one conversation requests. New students register on the login page with name, email and password (or Google); prices appear only on programs and courses, and membership options only after registering.
 - **/app** (students): free videos, members library, my courses with day-wise lessons, a pick-up-where-you-left-off panel (continue watching, next program day, a fresh suggestion), streaks, teacher notes, membership and payments.
 - **/teacher**: platform health (activation, conversion, renewal, videos published, most watched), sales and revenue, enquiries, courses with waitlists and early-bird prices, video library with access levels, classes and attendance, prices, coaching sessions, and giving access by hand.
 - **Payments**: Razorpay checkout for membership passes, courses and coaching packs, confirmed by signature check and a webhook.
