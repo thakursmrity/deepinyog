@@ -44,7 +44,7 @@ export const ABOUT = {
 };
 
 // Words in the band under the opening section.
-export const PRACTICE_WORDS = ["Hatha Yoga", "Pranayama", "Meditation", "Yoga Nidra", "Marma", "Yoga Therapy", "Live online"];
+export const PRACTICE_WORDS = ["Hatha Yoga", "Pranayama", "Meditation", "Knowledge", "Marma", "Yoga Therapy", "Live online"];
 
 // YouTube videos shown on the home page. Add video ids (the part after "v=" in the link).
 export const YOUTUBE_VIDEOS: { id: string; title: string }[] = [];
