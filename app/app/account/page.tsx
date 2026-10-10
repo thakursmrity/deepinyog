@@ -31,13 +31,13 @@ export default async function Account({ searchParams }: { searchParams: Promise<
             <>
               <p className="display" style={{ fontSize: 26 }}>Active until {formatDate(access.memberUntil)}</p>
               <p style={{ color: "var(--muted)" }}>Memberships don&apos;t renew on their own. Extend any time and the days are added on top.</p>
-              <Link className="btn btn-outline" href="/pricing" style={{ alignSelf: "flex-start" }}>Extend membership</Link>
+              <Link className="btn btn-outline" href="/app/membership" style={{ alignSelf: "flex-start" }}>Extend membership</Link>
             </>
           ) : (
             <>
-              <p className="display" style={{ fontSize: 26 }}>Free account</p>
+              <p className="display" style={{ fontSize: 26 }}>Not a member yet</p>
               <p style={{ color: "var(--muted)" }}>Become a member to unlock the full library and member live classes.</p>
-              <Link className="btn" href="/pricing" style={{ alignSelf: "flex-start" }}>See membership</Link>
+              <Link className="btn" href="/app/membership" style={{ alignSelf: "flex-start" }}>See membership</Link>
             </>
           )}
         </section>
@@ -47,12 +47,12 @@ export default async function Account({ searchParams }: { searchParams: Promise<
           {(credits.data ?? []).length > 0 ? (
             <>
               <p className="display" style={{ fontSize: 26 }}>{sessionsLeft} {sessionsLeft === 1 ? "session" : "sessions"} left</p>
-              <p style={{ color: "var(--sand-ink)" }}>Sessions are booked directly with your teacher.</p>
+              <p style={{ color: "var(--sand-ink)" }}>We fix our session times together.</p>
             </>
           ) : (
             <p style={{ color: "var(--sand-ink)" }}>Personal sessions with a plan built for you.</p>
           )}
-          <Link className="btn btn-outline" href="/pricing#coaching" style={{ alignSelf: "flex-start" }}>
+          <Link className="btn btn-outline" href="/app/membership#coaching" style={{ alignSelf: "flex-start" }}>
             {(credits.data ?? []).length > 0 ? "Add more sessions" : "See coaching"}
           </Link>
         </section>

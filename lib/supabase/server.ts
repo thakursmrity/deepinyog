@@ -2,8 +2,10 @@ import { createServerClient } from "@supabase/ssr";
 import { createClient as createAdmin } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./env";
+
+const url = SUPABASE_URL;
+const anonKey = SUPABASE_ANON_KEY;
 
 // Acts as the signed-in person, so row level security applies.
 export async function createClient() {
@@ -26,7 +28,7 @@ export async function createClient() {
 
 // Full access. Only used on the server, only after checking the caller is the teacher.
 export function createAdminClient() {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
   if (!serviceKey) throw new Error("SUPABASE_SERVICE_ROLE_KEY is not set");
   return createAdmin(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
 }

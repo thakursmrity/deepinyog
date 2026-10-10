@@ -37,9 +37,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   videos.sort((a, b) => order[a.access] - order[b.access]);
 
   const lockFor = (v: Video) => {
-    if (!user) return { href: `/signup?next=${encodeURIComponent(`/practice/${slug}`)}`, label: v.access === "free" ? "Sign up free to watch" : "Start free" };
-    if (v.course_id && byId.get(v.course_id)) return { href: `/courses/${byId.get(v.course_id)!.slug}`, label: "In a course" };
-    return { href: "/pricing", label: "Members" };
+    if (!user) return { href: `/signup?next=${encodeURIComponent(`/practice/${slug}`)}`, label: "Sign up to watch" };
+    if (v.course_id && byId.get(v.course_id)) return { href: `/courses/${byId.get(v.course_id)!.slug}`, label: "In a program" };
+    return { href: "/app/membership", label: "Unlock" };
   };
 
   return (

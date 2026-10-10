@@ -290,7 +290,7 @@ export async function updatePlan(planId: string, _prev: FormState, form: FormDat
     .eq("id", planId);
   if (error) return { error: error.message };
   revalidatePath("/teacher/plans");
-  revalidatePath("/pricing");
+  revalidatePath("/app/membership");
   return { ok: "Saved." };
 }
 

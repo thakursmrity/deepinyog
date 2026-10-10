@@ -54,7 +54,7 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
         {access.memberUntil ? (
           <span className="pill" style={{ fontSize: 14 }}>Member until {formatDate(access.memberUntil)}</span>
         ) : (
-          <Link className="btn btn-outline btn-small" href="/pricing">Become a member</Link>
+          <Link className="btn btn-outline btn-small" href="/app/membership">Become a member</Link>
         )}
         {streak > 0 ? (
           <p style={{ background: "var(--surface)", padding: "10px 16px", borderRadius: 999, fontWeight: 500 }}>
@@ -81,7 +81,7 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
               ) : null}
             </>
           ) : (
-            <p style={{ color: "var(--soft)" }}>No class scheduled yet. Your teacher will add the next one soon.</p>
+            <p style={{ color: "var(--soft)" }}>No class scheduled yet. I will add the next one soon.</p>
           )}
         </div>
 
@@ -106,7 +106,7 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
           <h2 style={{ fontSize: 24, marginBottom: 8 }}>Practice picked for you</h2>
           {(assignments.data ?? []).length === 0 ? (
             <p style={{ color: "var(--muted)" }}>
-              Nothing assigned yet. Start with the <Link href="/app/library">free practice videos</Link>.
+              Nothing picked for you yet. Start with the <Link href="/app/library">practice library</Link>.
             </p>
           ) : (
             (assignments.data ?? []).map((a) => {
@@ -129,14 +129,14 @@ export default async function StudentToday({ searchParams }: { searchParams: Pro
         </section>
 
         <section className="card" style={{ background: "var(--sand)", display: "flex", flexDirection: "column", gap: 14 }}>
-          <h2 style={{ fontSize: 24 }}>Note from your teacher</h2>
+          <h2 style={{ fontSize: 24 }}>A note from me</h2>
           {note.data ? (
             <>
               <p style={{ lineHeight: 1.6, color: "var(--soft)", whiteSpace: "pre-line" }}>{note.data.body}</p>
               <p style={{ fontSize: 14, color: "var(--sand-ink)" }}>{formatDate(note.data.created_at)}</p>
             </>
           ) : (
-            <p style={{ color: "var(--sand-ink)" }}>Notes from your teacher will show up here.</p>
+            <p style={{ color: "var(--sand-ink)" }}>My notes for you will show up here.</p>
           )}
         </section>
       </div>

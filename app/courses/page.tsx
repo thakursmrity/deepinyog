@@ -28,16 +28,16 @@ export default async function Courses() {
         <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 680 }}>
           <p className="eyebrow">Programs and courses</p>
           <h1 style={{ fontSize: "clamp(36px, 5vw, 52px)", lineHeight: 1.1 }}>Live programs, workshops and courses</h1>
-          <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.6 }}>Join live programs and workshops, or learn at your own pace with recorded courses. Join the waitlist for upcoming ones to hear first.</p>
+          <p style={{ fontSize: 18, color: "var(--soft)", lineHeight: 1.6 }}>Join me live in programs and workshops, or learn at your own pace with recorded courses. For upcoming ones, join the waitlist and I will let you know as soon as they open.</p>
         </div>
 
-        {courses.length === 0 ? <p style={{ color: "var(--muted)" }}>New programs are on the way. Create a free account to hear first.</p> : null}
+        {courses.length === 0 ? <p style={{ color: "var(--muted)" }}>New programs are on the way. Sign up to hear about them first.</p> : null}
 
         {open.length > 0 ? (
           <section style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <h2 style={{ fontSize: 32 }}>Open now</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
-              {open.map((c) => <CourseCard key={c.id} c={c} owned={owned.has(c.id)} />)}
+              {open.map((c) => <CourseCard key={c.id} c={c} owned={owned.has(c.id)} showPrice={Boolean(user)} />)}
             </div>
           </section>
         ) : null}
@@ -46,7 +46,7 @@ export default async function Courses() {
           <section style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <h2 style={{ fontSize: 32 }}>Coming soon</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
-              {upcoming.map((c) => <CourseCard key={c.id} c={c} />)}
+              {upcoming.map((c) => <CourseCard key={c.id} c={c} showPrice={Boolean(user)} />)}
             </div>
           </section>
         ) : null}

@@ -34,9 +34,39 @@ export const GROUP_BLURB: Record<string, string> = {
   "Everyday wellness": "Small rituals for calmer days at home and at work.",
 };
 
-// The three pillars shown on the home page.
+// The pillars on the home page and the practices page. Each groups a few topic groups.
+// Topics whose group isn't listed here still appear, under "More practices".
 export const PILLARS = [
-  { name: "Body", line: "Move with ease", groups: ["Body", "Healing"] },
-  { name: "Mind", line: "Breathe and be still", groups: ["Breath", "Mind"] },
-  { name: "Soul", line: "Return to yourself", groups: ["Soul", "Everyday wellness"] },
+  {
+    slug: "body",
+    name: "Body",
+    line: "Move with ease",
+    blurb: "Yoga, mobility and healing practices to ease pain, build strength and feel at home in your body.",
+    groups: ["Body", "Healing"],
+    tint: "var(--blush-soft)",
+  },
+  {
+    slug: "mind",
+    name: "Mind",
+    line: "Breathe and be still",
+    blurb: "Breathwork and meditation to settle stress, sleep better and think with more clarity.",
+    groups: ["Breath", "Mind"],
+    tint: "#f3f8f1",
+  },
+  {
+    slug: "soul",
+    name: "Soul",
+    line: "Return to yourself",
+    blurb: "Practices for inner peace, joy and growth, woven into everyday life.",
+    groups: ["Soul", "Everyday wellness"],
+    tint: "#fffaf0",
+  },
+  {
+    slug: "family",
+    name: "Women and family",
+    line: "Through every stage",
+    blurb: "Gentle support through every season of life, for you and your little ones.",
+    groups: ["Women and family"],
+    tint: "#ffffff",
+  },
 ];

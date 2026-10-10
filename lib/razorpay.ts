@@ -2,8 +2,8 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 // Server only. Keys come from environment variables, never from the browser.
 function keys() {
-  const keyId = process.env.RAZORPAY_KEY_ID;
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  const keyId = process.env.RAZORPAY_KEY_ID?.trim();
+  const keySecret = process.env.RAZORPAY_KEY_SECRET?.trim();
   if (!keyId || !keySecret) throw new Error("Payments are not set up yet: add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.");
   return { keyId, keySecret };
 }
@@ -48,7 +48,7 @@ export function verifyPaymentSignature(orderId: string, paymentId: string, signa
 
 // Webhooks: Razorpay signs the raw request body with the webhook secret.
 export function verifyWebhookSignature(rawBody: string, signature: string) {
-  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET?.trim();
   if (!secret) return false;
   const expected = createHmac("sha256", secret).update(rawBody).digest("hex");
   return safeEqual(expected, signature);

@@ -30,7 +30,8 @@ export function StatusPill({ status }: { status: CourseRow["status"] }) {
   return <span className="pill" style={{ background: "#eee", color: "#444" }}>Closed</span>;
 }
 
-export function CourseCard({ c, owned = false }: { c: CourseRow; owned?: boolean }) {
+// Prices and membership details only show to people who are signed in.
+export function CourseCard({ c, owned = false, showPrice = false }: { c: CourseRow; owned?: boolean; showPrice?: boolean }) {
   const early = earlyBirdActive(c);
   return (
     <Link href={`/courses/${c.slug}`} className="card" style={{ textDecoration: "none", color: "var(--ink)", display: "flex", flexDirection: "column", gap: 12 }}>
@@ -38,23 +39,22 @@ export function CourseCard({ c, owned = false }: { c: CourseRow; owned?: boolean
         <span className="pill" style={{ background: "var(--blush-soft)", color: "var(--ink)" }}>{KIND_LABEL[c.kind] ?? "Course"}</span>
         <StatusPill status={c.status} />
         {owned ? <span className="pill">Yours</span> : null}
-        {c.included_in_membership ? <span className="pill">Included in membership</span> : null}
+        {showPrice && c.included_in_membership ? <span className="pill">Included in membership</span> : null}
       </div>
       <h3 style={{ fontSize: 26 }}>{c.title}</h3>
       {c.summary ? <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>{c.summary}</p> : null}
       {c.schedule ? <p style={{ fontWeight: 500 }}>{c.schedule}</p> : null}
       {c.hosts ? <p style={{ color: "var(--muted)", fontSize: 15 }}>With {c.hosts}</p> : null}
       <div style={{ marginTop: "auto", display: "flex", flexWrap: "wrap", gap: 10, alignItems: "baseline" }}>
-        {c.price_paise > 0 ? (
+        {showPrice && c.price_paise > 0 ? (
           <>
             <span className="display" style={{ fontSize: 24 }}>{inr(coursePrice(c))}</span>
             {early ? <span style={{ textDecoration: "line-through", color: "var(--muted)" }}>{inr(c.price_paise)}</span> : null}
             {early && c.early_bird_until ? <span style={{ fontSize: 14, color: "var(--saffron-ink)", fontWeight: 700 }}>Early bird until {formatDate(c.early_bird_until)}</span> : null}
           </>
-        ) : (
-          <span className="display" style={{ fontSize: 24 }}>Free</span>
-        )}
-        {c.starts_on ? <span style={{ fontSize: 14, color: "var(--muted)" }}>Starts {formatDate(c.starts_on)}</span> : null}
+        ) : null}
+        {c.starts_on && !c.schedule ? <span style={{ fontSize: 14, color: "var(--muted)" }}>Starts {formatDate(c.starts_on)}</span> : null}
+        <span style={{ fontWeight: 500, color: "var(--brand)" }}>{c.status === "upcoming" ? "Find out more" : "Learn more"}</span>
       </div>
     </Link>
   );

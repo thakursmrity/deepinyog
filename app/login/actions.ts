@@ -48,7 +48,8 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   const fullName = String(formData.get("full_name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
-  const next = safePath(String(formData.get("next") ?? ""));
+  // New members see the welcome and membership page first, unless they came from somewhere specific.
+  const next = safePath(String(formData.get("next") ?? "")) || "/app/membership?welcome=1";
   if (!fullName || !email) return { error: "Please add your name and email." };
   if (password.length < 8) return { error: "Use a password of at least 8 characters." };
 
@@ -68,7 +69,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   }
   // With email confirmation off, the person is signed in straight away.
   if (data.session && data.user) redirect(await homeFor(data.user.id, next));
-  return { info: "Almost done. We sent a confirmation link to your email; open it to start practicing." };
+  return { info: "Almost done. I've sent a confirmation link to your email; open it to begin." };
 }
 
 export async function signInWithGoogle(formData: FormData) {
@@ -83,8 +84,8 @@ export async function signInWithGoogle(formData: FormData) {
   redirect(data.url);
 }
 
-export async function finishSignIn(userId: string, next: string) {
-  return homeFor(userId, next);
+export async function finishSignIn(userId: string, next: string, isNew = false) {
+  return homeFor(userId, next || (isNew ? "/app/membership?welcome=1" : ""));
 }
 
 export async function signOut() {

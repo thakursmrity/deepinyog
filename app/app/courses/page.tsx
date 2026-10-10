@@ -56,7 +56,7 @@ export default async function MyCourses({ searchParams }: { searchParams: Promis
         <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <h2 style={{ fontSize: 26 }}>On your waitlist</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-            {waiting.map((c) => <CourseCard key={c.id} c={c} />)}
+            {waiting.map((c) => <CourseCard key={c.id} c={c} showPrice />)}
           </div>
         </section>
       ) : null}

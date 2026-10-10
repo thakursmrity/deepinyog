@@ -12,7 +12,9 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error && data.user) {
-      const target = await finishSignIn(data.user.id, next);
+      // An account created in the last few minutes is a new sign-up (for example through Google).
+      const isNew = Date.now() - new Date(data.user.created_at).getTime() < 10 * 60 * 1000;
+      const target = await finishSignIn(data.user.id, next, isNew);
       return NextResponse.redirect(new URL(target, url.origin));
     }
   }

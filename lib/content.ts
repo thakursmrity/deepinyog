@@ -1,10 +1,11 @@
 // Website text that is easy to change without touching the page layout.
+// The site speaks in Deepshikha's own voice, so copy is written in the first person.
 
 export const TEACHER = {
   name: "Deepshikha",
   tagline: "Dive Deeper to Rise Higher",
   focus: "Mind, Yoga and Wellness",
-  // Check these with her before launch.
+  // Confirm these before launch.
   credentials: [
     "Sri Sri Yoga faculty, Art of Living",
     "Level 3 Yoga Instructor",
@@ -20,40 +21,62 @@ export const PHOTOS = {
   nature: "/forest-walk.jpg",
 };
 
-// Her own Instagram reels shown on the home page. Add or remove links here.
+// Instagram reels shown on the home page. Add or remove links here.
 export const INSTAGRAM_REELS = [
   "https://www.instagram.com/reel/DZJ-m4CRPTG/",
   "https://www.instagram.com/reel/DUpk3EiETeo/",
 ];
 
+export const HERO_TEXT =
+  "Holistic wellness for mind, body and soul. I share yoga, breathwork, meditation and healing practices to help you move with ease, find calm, and come home to yourself.";
+
 export const ABOUT = {
-  // Photo in /public. Replace teacher.jpg with a larger, sharper portrait when she has one.
   photo: "/pose-fort.jpg",
+  heading: "Hi, I'm Deepshikha",
   paragraphs: [
-    "For more than a decade, Deepshikha has taught yoga, meditation and breathwork to students, working professionals, corporate teams and administrators.",
-    "Her approach is holistic: Hatha yoga, pranayama, meditation, Marma therapy and life coaching come together to care for the body, settle the mind and nourish the spirit.",
-    "Every student is seen individually. Your goals, your body, and anything you share about pain or health shape how you practise.",
+    "For more than a decade, I have been teaching yoga, meditation and breathwork to students, working professionals, corporate teams and administrators.",
+    "My approach is holistic. Hatha yoga, pranayama, meditation, Marma therapy and life coaching come together to care for the body, settle the mind and nourish the spirit.",
+    "I see every person individually. Your goals, your body, and anything you share about pain or health shape how we practise together.",
   ],
 };
 
-export const CLASSES = [
+// "Work with me": personal and group offerings. No prices here; every card leads to a conversation.
+export const WORK_WITH_ME = [
   {
-    title: "Group classes",
-    body: "Live online sessions in a small group. A steady rhythm for building the habit.",
+    title: "Live group classes",
+    body: "Practise with me live, in small online groups. A steady rhythm that makes the habit easy to keep.",
     cta: "Ask about timings",
+    interest: "Live group classes",
   },
   {
-    title: "1-on-1 sessions",
-    body: "A plan built only for you: your goals, your schedule, your body's needs.",
-    cta: "Ask about a session",
+    title: "1:1 guidance",
+    body: "Personal yoga therapy, Marma care or life coaching, shaped around your body, your goals and your pace.",
+    cta: "Start a conversation",
+    interest: "1:1 guidance",
   },
   {
-    title: "Meditation",
-    body: "Guided breathwork and meditation to calm a busy mind and sleep better.",
-    cta: "Ask about meditation",
+    title: "Soulful conversations",
+    body: "Unhurried conversations on stress, purpose, relationships and finding balance, with practices to take home.",
+    cta: "Reach out",
+    interest: "Soulful conversations",
+  },
+  {
+    title: "For organisations",
+    body: "I have guided corporate teams, schools and groups. Sessions on stress, posture, breath and focus, designed for your people.",
+    cta: "Plan a session",
+    interest: "Sessions for an organisation",
   },
 ];
 
-// Free videos shown on the home page. Add YouTube video ids (the part after "v=" in the link).
-// While this list is empty, the section shows a single card that opens her YouTube channel.
+// The choices in the enquiry form. Keep in sync with WORK_WITH_ME interests.
+export const ENQUIRY_INTERESTS = [
+  "Live group classes",
+  "1:1 guidance",
+  "Soulful conversations",
+  "Sessions for an organisation",
+  "Something else",
+];
+
+// YouTube videos shown on the home page. Add video ids (the part after "v=" in the link).
+// While this list is empty, the section shows a single card that opens the YouTube channel.
 export const FREE_VIDEOS: { id: string; title: string }[] = [];

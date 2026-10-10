@@ -30,7 +30,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         ) : null}
         <SignInForm next={next} />
         <p style={{ color: "var(--muted)" }}>
-          New here? <Link href={`/signup${next ? `?next=${encodeURIComponent(next)}` : ""}`}>Create a free account</Link>
+          New here? <Link href={`/signup${next ? `?next=${encodeURIComponent(next)}` : ""}`}>Sign up</Link>
         </p>
       </div>
     </main>

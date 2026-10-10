@@ -27,7 +27,7 @@ export default async function WatchVideo({ params }: { params: Promise<{ id: str
           ) : (
             <>
               <p>This practice is in the members library.</p>
-              <Link className="btn" href="/pricing" style={{ alignSelf: "flex-start" }}>Become a member</Link>
+              <Link className="btn" href="/app/membership" style={{ alignSelf: "flex-start" }}>Become a member</Link>
             </>
           )}
         </section>

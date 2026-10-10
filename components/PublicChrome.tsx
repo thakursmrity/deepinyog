@@ -15,16 +15,16 @@ export async function PublicHeader() {
         <Logo tagline />
       </Link>
       <nav aria-label="Main" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 22 }}>
-        <Link href="/practice" style={{ textDecoration: "none" }}>Practice</Link>
+        <Link href="/practice" style={{ textDecoration: "none" }}>Practices</Link>
         <Link href="/courses" style={{ textDecoration: "none" }}>Programs</Link>
-        <Link href="/pricing" style={{ textDecoration: "none" }}>Membership</Link>
+        <Link href="/#work-with-me" style={{ textDecoration: "none" }}>Work with me</Link>
         <Link href="/#about" style={{ textDecoration: "none" }}>About</Link>
         {user ? (
           <Link className="btn" href="/app">My practice</Link>
         ) : (
           <>
             <Link href="/login" style={{ textDecoration: "none" }}>Sign in</Link>
-            <Link className="btn" href="/signup">Start free</Link>
+            <Link className="btn" href="/signup">Sign up</Link>
           </>
         )}
       </nav>

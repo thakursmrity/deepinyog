@@ -3,50 +3,47 @@ import { COURSE_FIELDS, CourseCard, type CourseRow } from "@/components/CourseCa
 import { EnquiryForm } from "@/components/EnquiryForm";
 import { InstagramReels } from "@/components/InstagramReels";
 import { PublicFooter, PublicHeader } from "@/components/PublicChrome";
-import { CATEGORY_FIELDS, GROUP_BLURB, PILLARS, groupCategories, type Category } from "@/lib/categories";
-import { ABOUT, CLASSES, INSTAGRAM_REELS, PHOTOS, TEACHER } from "@/lib/content";
+import { CATEGORY_FIELDS, PILLARS, groupCategories, type Category } from "@/lib/categories";
+import { ABOUT, HERO_TEXT, INSTAGRAM_REELS, PHOTOS, TEACHER, WORK_WITH_ME } from "@/lib/content";
 import { LINKS, external } from "@/lib/links";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const OFFERS = [
-  { title: "Free account", body: "Free practices from her YouTube library, your streak and progress, and a look inside every program.", href: "/signup", cta: "Start free" },
-  { title: "Membership", body: "The full library across body, breath, mind and soul, with new practices every week.", href: "/pricing", cta: "See membership" },
-  { title: "1-on-1 guidance", body: "Personal yoga therapy, Marma care or life coaching, built around you.", href: "/pricing#coaching", cta: "See coaching" },
-  { title: "For teams", body: "Yoga, breathwork and stress care for workplaces, schools and groups.", href: "#join", cta: "Ask about team sessions" },
-];
-
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ interest?: string }> }) {
+  const { interest } = await searchParams;
   const supabase = await createClient();
-  const [{ data: cats }, { data: progs }] = await Promise.all([
+  const [{ data: cats }, { data: progs }, { data: authData }] = await Promise.all([
     supabase.from("categories").select(CATEGORY_FIELDS).eq("active", true),
     supabase.from("courses").select(COURSE_FIELDS).in("status", ["open", "upcoming"]).order("starts_on", { ascending: true, nullsFirst: false }).limit(3),
+    supabase.auth.getUser(),
   ]);
+  const signedIn = Boolean(authData.user);
   const groups = groupCategories((cats ?? []) as Category[]);
   const byName = new Map(groups.map((g) => [g.name, g.items]));
   const programs = (progs ?? []) as CourseRow[];
+  const mainPillars = PILLARS.filter((p) => p.slug !== "family");
+  const family = PILLARS.find((p) => p.slug === "family");
+  const familyTopics = family ? family.groups.flatMap((g) => byName.get(g) ?? []) : [];
 
   return (
     <>
       <PublicHeader />
 
       <main>
-        {/* Hero: her photo, tagline, credentials */}
+        {/* Hero */}
         <section className="container" style={{ paddingTop: 40, paddingBottom: 72, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 48 }}>
           <div style={{ flex: "1 1 440px", minWidth: 0, display: "flex", flexDirection: "column", gap: 22 }}>
             <p className="eyebrow">{TEACHER.focus} with {TEACHER.name}</p>
             <h1 style={{ fontSize: "clamp(42px, 6vw, 66px)", lineHeight: 1.06 }}>{TEACHER.tagline}</h1>
-            <p style={{ fontSize: 19, lineHeight: 1.65, color: "var(--soft)", maxWidth: 540 }}>
-              Holistic wellness for mind, body and soul. Yoga, breathwork, meditation and healing practices to help you move with ease, find calm, and come home to yourself.
-            </p>
+            <p style={{ fontSize: 19, lineHeight: 1.65, color: "var(--soft)", maxWidth: 540 }}>{HERO_TEXT}</p>
             <ul aria-label="Credentials" style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexWrap: "wrap", gap: 8 }}>
               {TEACHER.credentials.slice(0, 3).map((c) => (
                 <li key={c} className="pill" style={{ fontSize: 13.5, padding: "6px 12px" }}>{c}</li>
               ))}
             </ul>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-              <Link className="btn" href="/signup">Start free</Link>
+              <Link className="btn" href={signedIn ? "/app" : "/signup"}>{signedIn ? "Continue my practice" : "Sign up"}</Link>
               <Link className="btn btn-outline" href="/practice">Explore practices</Link>
             </div>
           </div>
@@ -59,7 +56,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Mind, body, soul */}
+        {/* Mind, body and soul */}
         <section className="wash">
           <div className="container" style={{ paddingTop: 72, paddingBottom: 72, display: "flex", flexDirection: "column", gap: 32 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 680 }}>
@@ -67,35 +64,37 @@ export default async function Home() {
               <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>What would you like to nurture today?</h2>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 20 }}>
-              {PILLARS.map((p, i) => (
-                <div key={p.name} className="card" style={{ display: "flex", flexDirection: "column", gap: 16, padding: 26, background: i === 0 ? "var(--blush-soft)" : i === 1 ? "#f3f8f1" : "#fffaf0" }}>
-                  <div>
-                    <h3 style={{ fontSize: 30 }}>{p.name}</h3>
-                    <p style={{ color: "var(--saffron-ink)", fontWeight: 500 }}>{p.line}</p>
-                  </div>
-                  {p.groups.map((g) =>
-                    byName.get(g)?.length ? (
-                      <div key={g} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "var(--muted)" }}>{g}</p>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                          {byName.get(g)!.map((c) => (
-                            <Link key={c.id} className="chip" href={`/practice/${c.slug}`}>{c.title}</Link>
-                          ))}
-                        </div>
+              {mainPillars.map((p) => {
+                const topics = p.groups.flatMap((g) => byName.get(g) ?? []);
+                return (
+                  <div key={p.slug} className="card" style={{ display: "flex", flexDirection: "column", gap: 14, padding: 26, background: p.tint }}>
+                    <Link href={`/practice#${p.slug}`} style={{ textDecoration: "none", color: "var(--ink)", display: "flex", flexDirection: "column", gap: 4 }}>
+                      <h3 style={{ fontSize: 30 }}>{p.name}</h3>
+                      <span style={{ color: "var(--saffron-ink)", fontWeight: 500 }}>{p.line}</span>
+                    </Link>
+                    <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>{p.blurb}</p>
+                    {topics.length ? (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                        {topics.slice(0, 7).map((c) => (
+                          <Link key={c.id} className="chip" href={`/practice/${c.slug}`}>{c.title}</Link>
+                        ))}
                       </div>
-                    ) : null,
-                  )}
-                </div>
-              ))}
+                    ) : null}
+                    <Link href={`/practice#${p.slug}`} style={{ marginTop: "auto", fontWeight: 500 }}>
+                      Explore {p.name.toLowerCase()} practices
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
-            {byName.get("Women and family")?.length ? (
+            {family ? (
               <div className="card" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 14, padding: "20px 24px" }}>
-                <div style={{ flex: "1 1 220px" }}>
-                  <h3 style={{ fontSize: 22 }}>Women and family</h3>
-                  <p style={{ color: "var(--muted)" }}>{GROUP_BLURB["Women and family"]}</p>
-                </div>
+                <Link href={`/practice#${family.slug}`} style={{ flex: "1 1 220px", textDecoration: "none", color: "var(--ink)" }}>
+                  <h3 style={{ fontSize: 22 }}>{family.name}</h3>
+                  <p style={{ color: "var(--muted)" }}>{family.blurb}</p>
+                </Link>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {byName.get("Women and family")!.map((c) => (
+                  {familyTopics.map((c) => (
                     <Link key={c.id} className="chip" href={`/practice/${c.slug}`}>{c.title}</Link>
                   ))}
                 </div>
@@ -106,44 +105,19 @@ export default async function Home() {
 
         {/* Programs and workshops */}
         {programs.length > 0 ? (
-          <section className="container" style={{ paddingTop: 80, paddingBottom: 24, display: "flex", flexDirection: "column", gap: 28 }}>
+          <section className="container" style={{ paddingTop: 80, paddingBottom: 8, display: "flex", flexDirection: "column", gap: 28 }}>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 <p className="eyebrow">Programs and workshops</p>
-                <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Join a live program</h2>
+                <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Join me live</h2>
               </div>
               <Link href="/courses" style={{ fontWeight: 500 }}>See all programs</Link>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
-              {programs.map((c) => <CourseCard key={c.id} c={c} />)}
+              {programs.map((c) => <CourseCard key={c.id} c={c} showPrice={signedIn} />)}
             </div>
           </section>
         ) : null}
-
-        {/* Ways to practise */}
-        <section className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "flex", flexDirection: "column", gap: 32 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <p className="eyebrow">Ways to practise</p>
-            <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Start free, go deeper when you&apos;re ready</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
-            {OFFERS.map((o) => (
-              <div key={o.title} className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <h3 style={{ fontSize: 24 }}>{o.title}</h3>
-                <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>{o.body}</p>
-                <Link href={o.href} style={{ marginTop: "auto", fontWeight: 500 }}>{o.cta}</Link>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Nature band */}
-        <section aria-hidden="true" className="container">
-          <div style={{ borderRadius: 28, overflow: "hidden", aspectRatio: "21 / 8", border: "1px solid var(--hair)" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={PHOTOS.nature} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
-          </div>
-        </section>
 
         {/* About */}
         <section id="about" className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "flex", flexWrap: "wrap", gap: 56, alignItems: "center" }}>
@@ -152,8 +126,8 @@ export default async function Home() {
             <img src={ABOUT.photo} alt={`${TEACHER.name} in a yoga pose`} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%" }} />
           </div>
           <div style={{ flex: "1 1 440px", minWidth: 0, display: "flex", flexDirection: "column", gap: 16 }}>
-            <p className="eyebrow">About</p>
-            <h2 style={{ fontSize: 44, lineHeight: 1.15 }}>Meet {TEACHER.name}</h2>
+            <p className="eyebrow">About me</p>
+            <h2 style={{ fontSize: 44, lineHeight: 1.15 }}>{ABOUT.heading}</h2>
             {ABOUT.paragraphs.map((p) => (
               <p key={p} style={{ fontSize: 18, lineHeight: 1.75, color: "var(--soft)" }}>{p}</p>
             ))}
@@ -168,54 +142,64 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Live classes */}
-        <section id="classes" className="wash">
-          <div className="container" style={{ paddingTop: 72, paddingBottom: 72, display: "flex", flexDirection: "column", gap: 28 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <p className="eyebrow">Live classes</p>
-              <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Practise together, live</h2>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
-              {CLASSES.map((c) => (
-                <div key={c.title} className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <h3 style={{ fontSize: 24 }}>{c.title}</h3>
-                  <p style={{ lineHeight: 1.6, color: "var(--soft)" }}>{c.body}</p>
-                  <a href="#join" style={{ marginTop: "auto", fontWeight: 500 }}>{c.cta}</a>
-                </div>
-              ))}
-            </div>
+        {/* Nature band */}
+        <section aria-hidden="true" className="container">
+          <div style={{ borderRadius: 28, overflow: "hidden", aspectRatio: "21 / 8", border: "1px solid var(--hair)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={PHOTOS.nature} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
+          </div>
+        </section>
+
+        {/* Work with me */}
+        <section id="work-with-me" className="container" style={{ paddingTop: 80, paddingBottom: 80, display: "flex", flexDirection: "column", gap: 32 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 680 }}>
+            <p className="eyebrow">Work with me</p>
+            <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Let&apos;s practise together</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
+            {WORK_WITH_ME.map((o) => (
+              <div key={o.title} className="card" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <h3 style={{ fontSize: 24 }}>{o.title}</h3>
+                <p style={{ color: "var(--soft)", lineHeight: 1.6 }}>{o.body}</p>
+                <a href={`/?interest=${encodeURIComponent(o.interest)}#join`} style={{ marginTop: "auto", fontWeight: 500 }}>
+                  {o.cta}
+                </a>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Instagram */}
         {INSTAGRAM_REELS.length > 0 ? (
-          <section className="container" style={{ paddingTop: 80, paddingBottom: 24, display: "flex", flexDirection: "column", gap: 28 }}>
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <p className="eyebrow">From Instagram</p>
-                <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Little moments of practice</h2>
+          <section className="wash">
+            <div className="container" style={{ paddingTop: 72, paddingBottom: 72, display: "flex", flexDirection: "column", gap: 28 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <p className="eyebrow">From Instagram</p>
+                  <h2 style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>Little moments of practice</h2>
+                </div>
+                <a href={LINKS.instagram} {...external} style={{ fontWeight: 500 }}>Follow @deepinyog</a>
               </div>
-              <a href={LINKS.instagram} {...external} style={{ fontWeight: 500 }}>Follow @deepinyog</a>
+              <InstagramReels links={INSTAGRAM_REELS} />
             </div>
-            <InstagramReels links={INSTAGRAM_REELS} />
           </section>
         ) : null}
 
         {/* Enquiry */}
-        <section id="join" className="container" style={{ paddingTop: 80, paddingBottom: 88 }}>
+        <section id="join" className="container" style={{ paddingTop: 80, paddingBottom: 88, scrollMarginTop: 16 }}>
           <div className="card" style={{ padding: "44px 36px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 40, position: "relative", overflow: "hidden" }}>
             <div aria-hidden="true" className="sun-glow" style={{ position: "absolute", width: 420, height: 420, left: -140, top: -160, opacity: 0.7, pointerEvents: "none" }} />
             <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14, position: "relative" }}>
-              <h2 style={{ fontSize: 42 }}>Ready to begin?</h2>
+              <h2 style={{ fontSize: 42 }}>Write to me</h2>
               <p style={{ fontSize: 18, lineHeight: 1.6, color: "var(--soft)" }}>
-                Tell us a little about yourself, or about your team, and you&apos;ll get a reply to find the practice that fits.
+                Tell me a little about yourself, or about your team, and I&apos;ll get back to you.
               </p>
               <a className="btn btn-outline" href={LINKS.instagram} {...external} style={{ alignSelf: "flex-start" }}>
-                Or message on Instagram
+                Or message me on Instagram
               </a>
             </div>
             <div style={{ flex: "1.4 1 380px", minWidth: 0, position: "relative" }}>
-              <EnquiryForm />
+              <EnquiryForm key={interest ?? "default"} defaultInterest={interest} />
             </div>
           </div>
         </section>

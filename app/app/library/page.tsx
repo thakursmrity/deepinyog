@@ -38,7 +38,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
         {access.memberUntil ? (
           <span className="pill" style={{ fontSize: 14 }}>Member until {formatDate(access.memberUntil)}</span>
         ) : (
-          <Link className="btn" href="/pricing">Unlock everything with membership</Link>
+          <Link className="btn" href="/app/membership">Unlock everything with membership</Link>
         )}
       </div>
 
@@ -52,10 +52,10 @@ export default async function Library({ searchParams }: { searchParams: Promise<
       ) : null}
 
       <section className="card" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        <h2 style={{ fontSize: 24, marginBottom: 8 }}>Free practice</h2>
-        {free.length === 0 ? <p style={{ color: "var(--muted)" }}>{current ? "No free videos in this topic yet." : "Free videos are coming soon."}</p> : null}
+        <h2 style={{ fontSize: 24, marginBottom: 8 }}>Open to you</h2>
+        {free.length === 0 ? <p style={{ color: "var(--muted)" }}>{current ? "Nothing open in this topic yet." : "New practices are coming soon."}</p> : null}
         {free.map((v) => (
-          <VideoRow key={v.id} youtubeId={v.youtube_id} id={v.id} title={v.title} minutes={v.duration_minutes} unlocked lockedHref="/pricing" lockedLabel="" done={done.has(v.id)} />
+          <VideoRow key={v.id} youtubeId={v.youtube_id} id={v.id} title={v.title} minutes={v.duration_minutes} unlocked lockedHref="/app/membership" lockedLabel="" done={done.has(v.id)} />
         ))}
       </section>
 
@@ -69,7 +69,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
               title={v.title}
               minutes={v.duration_minutes}
               unlocked={canWatch(v, access, byId)}
-              lockedHref="/pricing"
+              lockedHref="/app/membership"
               lockedLabel="Become a member"
               done={done.has(v.id)}
             />

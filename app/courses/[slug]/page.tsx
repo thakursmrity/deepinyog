@@ -65,40 +65,40 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         </article>
 
         <aside className="card" style={{ flex: "1 1 300px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14, position: "relative" }}>
-          {c.price_paise > 0 ? (
+          {user && c.price_paise > 0 && !owned ? (
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: 10 }}>
               <span className="display" style={{ fontSize: 36 }}>{inr(coursePrice(c))}</span>
               {early ? <span style={{ textDecoration: "line-through", color: "var(--muted)" }}>{inr(c.price_paise)}</span> : null}
             </div>
-          ) : (
-            <span className="display" style={{ fontSize: 36 }}>Free</span>
-          )}
-          {early && c.early_bird_until ? <p style={{ color: "var(--saffron-ink)", fontWeight: 700 }}>Early-bird price until {formatDate(c.early_bird_until)}</p> : null}
+          ) : null}
+          {user && early && c.early_bird_until && !owned ? <p style={{ color: "var(--saffron-ink)", fontWeight: 700 }}>Early-bird price until {formatDate(c.early_bird_until)}</p> : null}
           {c.schedule ? <p style={{ fontWeight: 500 }}>{c.schedule}</p> : null}
           {c.starts_on && !c.schedule ? <p style={{ color: "var(--muted)" }}>Starts {formatDate(c.starts_on)}</p> : null}
 
           {owned ? (
             <Link className="btn" href="/app/courses">Go to my course</Link>
           ) : c.status === "open" && c.price_paise === 0 && c.register_url ? (
-            <a className="btn" href={c.register_url} target="_blank" rel="noopener noreferrer">Register free</a>
+            <a className="btn" href={c.register_url} target="_blank" rel="noopener noreferrer">Register</a>
           ) : c.status === "open" && c.price_paise === 0 ? (
             <form action={enrollFree.bind(null, c.id, c.slug)}>
-              <button className="btn" type="submit">Join free</button>
+              <button className="btn" type="submit">Join</button>
             </form>
+          ) : c.status === "open" && !user ? (
+            <Link className="btn" href={`/signup?next=${encodeURIComponent(`/courses/${c.slug}`)}`}>Sign up to join</Link>
           ) : c.status === "open" ? (
             <BuyButton itemType="course" itemId={c.id} signedIn={Boolean(user)} successPath="/app/courses?welcome=1" label="Enroll now" />
           ) : c.status === "upcoming" ? (
             <form action={toggleWaitlist.bind(null, c.id, c.slug, !waitlisted)} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {waitlisted ? <p className="success">You&apos;re on the waitlist. You&apos;ll hear first when it opens.</p> : <p style={{ color: "var(--soft)" }}>Join free to hear first and get the early-bird price.</p>}
+              {waitlisted ? <p className="success">You&apos;re on the waitlist. I&apos;ll let you know as soon as it opens.</p> : <p style={{ color: "var(--soft)" }}>Join the waitlist and I&apos;ll let you know as soon as it opens.</p>}
               <button className={waitlisted ? "btn btn-outline" : "btn"} type="submit">{waitlisted ? "Leave waitlist" : "Join the waitlist"}</button>
             </form>
           ) : (
-            <p style={{ color: "var(--muted)" }}>Enrollment for this course is closed.</p>
+            <p style={{ color: "var(--muted)" }}>This one is closed for now.</p>
           )}
 
-          {!owned && c.included_in_membership ? (
+          {user && !owned && c.included_in_membership ? (
             <p style={{ fontSize: 14, color: "var(--muted)" }}>
-              Also included with <Link href="/pricing">membership</Link>.
+              Also included with <Link href="/app/membership">membership</Link>.
             </p>
           ) : null}
         </aside>
